@@ -26,57 +26,11 @@ class DocumentCategoryApiController extends AdminBaseController
      * Display a listing of the resource.
      *
      * @param  Request  $request
-     * @return Datatables
+     * @return array
      */
     public function index(Request $request)
     {
-        $page_categories = DocumentCategory::select(['id','name','created_at']);
-        // if is filter action
-        if ($request->has('action') && $request->input('action') === 'filter') {
-            $page_categories->filter($request);
-        }
-
-        $addColumns = [
-            'addUrls' => [
-                'edit_page'     => ['route' => 'admin.page_category.edit', 'id' => true],
-                'relations'     => ['route' => 'admin.page_category.page.index', 'id' => true]
-            ]
-        ];
-        $editColumns = [
-            'created_at'        => function($model) { return $model->created_at_table; }
-        ];
-        $removeColumns = [];
-        return $this->getDatatables($page_categories, $addColumns, $editColumns, $removeColumns);
-    }
-
-    /**
-     * get detail
-     *
-     * @param integer $id
-     * @param Request $request
-     * @return Datatables
-     */
-    public function detail($id, Request $request)
-    {
-        $page_category = DocumentCategory::where('id',$id)->select(['id','name', 'created_at','updated_at']);
-
-        $editColumns = [
-            'created_at'    => function($model) { return $model->created_at_table; },
-            'updated_at'    => function($model) { return $model->updated_at_table; }
-        ];
-        return $this->getDatatables($page_category, [], $editColumns, []);
-    }
-
-    /**
-     * get model data for edit
-     *
-     * @param $id
-     * @param Request $request
-     * @return DocumentCategory
-     */
-    public function fastEdit($id, Request $request)
-    {
-        return DocumentCategory::find($id);
+        return $this->getNodes(DocumentCategory::class, $request);
     }
 
     /**
@@ -120,20 +74,6 @@ class DocumentCategoryApiController extends AdminBaseController
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
-    }
-
-    /**
-     * group action method
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function group(Request $request)
-    {
-        if ( $this->destroyGroupAction(DocumentCategory::class, $request->input('id'), []) ) {
-            return response()->json(['result' => 'success']);
-        }
-        return response()->json(['result' => 'error']);
     }
 
     /**
