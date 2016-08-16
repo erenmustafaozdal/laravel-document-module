@@ -101,16 +101,6 @@ return [
     | Models config
     |--------------------------------------------------------------------------
     */
-    'document_category' => [
-        'show_relation_category_link'=> true, // is show document category nested category link on table
-        'show_relation_document_link'=> true, // is show document category relation document link on table
-
-        // nestable level type : 0 (unlimited), 1 (only root level) or any integer > 1
-        'nestable_level' => [
-            'root'                  => 0, // nestable level on root of document category index
-            'nested_category'       => 1  // nestable level on nested category of document category index
-        ]
-    ],
     'document' => [
         'default_img_path' => 'vendor/laravel-modules-core/assets/global/img/document',
         'uploads' => [

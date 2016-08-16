@@ -31,8 +31,8 @@ class DocumentCategoryController extends AdminBaseController
             return view(config('laravel-document-module.views.document_category.index'));
         }
 
-        $document_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-document-module.views.document_category.index'), compact('document_category'));
+        $parent_document_category = DocumentCategory::findOrFail($id);
+        return view(config('laravel-document-module.views.document_category.index'), compact('parent_document_category'));
     }
 
     /**
@@ -47,33 +47,49 @@ class DocumentCategoryController extends AdminBaseController
             return view(config('laravel-document-module.views.document_category.create'));
         }
 
-        $document_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-document-module.views.document_category.create'), compact('document_category'));
+        $parent_document_category = DocumentCategory::findOrFail($id);
+        return view(config('laravel-document-module.views.document_category.create'), compact('parent_document_category'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  StoreRequest  $request
+     * @param integer|null $id
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, $id = null)
     {
-        return $this->storeModel(DocumentCategory::class, $request, [
+        if (is_null($id)) {
+            $redirect = 'index';
+        } else {
+            $redirect = 'document_category.document_category.index';
+            $this->relatedModelId = $id;
+            $this->modelRouteRegex = config('laravel-document-module.url.document_category');
+        }
+
+        return $this->storeNode(DocumentCategory::class, $request, [
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
-        ], [], 'index');
+        ],$redirect);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  DocumentCategory  $document_category
+     * @param integer|DocumentCategory $firstId
+     * @param integer|null $secondId
      * @return \Illuminate\Http\Response
      */
-    public function show(DocumentCategory $document_category)
+    public function show($firstId, $secondId = null)
     {
-        return view(config('laravel-document-module.views.document_category.show'), compact('document_category'));
+        $document_category = is_null($secondId) ? $firstId : $secondId;
+        if (is_null($secondId)) {
+            return view(config('laravel-document-module.views.document_category.show'), compact('document_category'));
+        }
+
+        $parent_document_category = DocumentCategory::findOrFail($firstId);
+        return view(config('laravel-document-module.views.document_category.show'), compact('parent_document_category','document_category'));
     }
 
     /**

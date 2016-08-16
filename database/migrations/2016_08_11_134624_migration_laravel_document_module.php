@@ -24,6 +24,10 @@ class MigrationLaravelDocumentModule extends Migration
                 // kategoriye bağlı olarak modelde açıklama ve fotoğraf olacak mı?
                 $table->boolean('has_description')->default(0);
                 $table->boolean('has_photo')->default(0);
+                // kategoriye bağlı olarak ön yüzde gösterim
+                $table->boolean('show_title')->default(1);
+                $table->boolean('show_description')->default(1);
+                $table->boolean('show_photo')->default(1);
 
                 $table->string('name');
                 $table->timestamps();
