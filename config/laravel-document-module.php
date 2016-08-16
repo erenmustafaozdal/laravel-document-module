@@ -82,9 +82,9 @@ return [
         'document_category' => [
             'layout'                => 'laravel-modules-core::layouts.admin',           // user layout
             'index'                 => 'laravel-modules-core::document_category.index', // get document category index view blade
-            'create'                => 'laravel-modules-core::document_category.create',// get document category create view blade
+            'create'                => 'laravel-modules-core::document_category.operation',// get document category create view blade
             'show'                  => 'laravel-modules-core::document_category.show',  // get document category show view blade
-            'edit'                  => 'laravel-modules-core::document_category.edit',  // get document category edit view blade
+            'edit'                  => 'laravel-modules-core::document_category.operation',// get document category edit view blade
         ],
         // document view
         'document' => [

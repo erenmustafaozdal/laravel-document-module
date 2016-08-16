@@ -43,12 +43,13 @@ class DocumentCategoryController extends AdminBaseController
      */
     public function create($id = null)
     {
+        $operation = 'create';
         if (is_null($id)) {
-            return view(config('laravel-document-module.views.document_category.create'));
+            return view(config('laravel-document-module.views.document_category.create'), compact('operation'));
         }
 
         $parent_document_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-document-module.views.document_category.create'), compact('parent_document_category'));
+        return view(config('laravel-document-module.views.document_category.create'), compact('parent_document_category','operation'));
     }
 
     /**
@@ -100,7 +101,8 @@ class DocumentCategoryController extends AdminBaseController
      */
     public function edit(DocumentCategory $document_category)
     {
-        return view(config('laravel-document-module.views.document_category.edit'), compact('document_category'));
+        $operation = 'edit';
+        return view(config('laravel-document-module.views.document_category.edit'), compact('document_category','operation'));
     }
 
     /**
