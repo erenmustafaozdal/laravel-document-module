@@ -51,6 +51,7 @@ return [
             'document'                      => true,                // admin document resource route
             'document_publish'              => true,                // admin document publish get route
             'document_notPublish'           => true,                // admin document not publish get route
+            'category_categories'           => true,                // admin category nested categories resource route
             'category_documents'            => true,                // admin category documents resource route
             'category_documents_publish'    => true,                // admin category documents publish get route
             'category_documents_notPublish' => true                 // admin category documents not publish get route
@@ -65,6 +66,7 @@ return [
             'document_fastEdit'             => true,                // api document fast edit post route
             'document_publish'              => true,                // api document publish get route
             'document_notPublish'           => true,                // api document not publish get route
+            'category_categories_index'     => true,                // api category nested categories index get route
             'category_documents_index'      => true,                // api category documents index get route
         ]
     ],
@@ -99,6 +101,16 @@ return [
     | Models config
     |--------------------------------------------------------------------------
     */
+    'document_category' => [
+        'show_relation_category_link'=> true, // is show document category nested category link on table
+        'show_relation_document_link'=> true, // is show document category relation document link on table
+
+        // nestable level type : 0 (unlimited), 1 (only root level) or any integer > 1
+        'nestable_level' => [
+            'root'                  => 0, // nestable level on root of document category index
+            'nested_category'       => 1  // nestable level on nested category of document category index
+        ]
+    ],
     'document' => [
         'default_img_path' => 'vendor/laravel-modules-core/assets/global/img/document',
         'uploads' => [

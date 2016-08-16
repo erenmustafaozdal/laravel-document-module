@@ -14,7 +14,7 @@ class StoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.page_category.store')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.document_category.store')) {
             return true;
         }
         return false;
@@ -28,7 +28,10 @@ class StoreRequest extends Request
     public function rules()
     {
         return [
-            'name'          => 'required|max:255'
+            'name'          => 'required|max:255',
+            'parent'        => 'required|integer',
+            'position'      => 'required|in:firstChild,lastChild,before,after',
+            'related'       => 'required|integer'
         ];
     }
 }

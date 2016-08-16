@@ -14,7 +14,7 @@ class ApiUpdateRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.page_category.update')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.document_category.update')) {
             return true;
         }
         return false;
@@ -28,7 +28,8 @@ class ApiUpdateRequest extends Request
     public function rules()
     {
         return [
-            'name'          => 'required|max:255'
+            'name'          => 'required|max:255',
+            'parent'        => 'required|integer'
         ];
     }
 }

@@ -38,11 +38,17 @@ class DocumentCategoryController extends AdminBaseController
     /**
      * Show the form for creating a new resource.
      *
+     * @param integer|null $id
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
-        return view(config('laravel-document-module.views.document_category.create'));
+        if (is_null($id)) {
+            return view(config('laravel-document-module.views.document_category.create'));
+        }
+
+        $document_category = DocumentCategory::findOrFail($id);
+        return view(config('laravel-document-module.views.document_category.create'), compact('document_category'));
     }
 
     /**

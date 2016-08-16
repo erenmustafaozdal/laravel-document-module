@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory;
 use App\Http\Requests\Request;
 use Sentinel;
 
-class ApiStoreRequest extends Request
+class ApiMoveRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class ApiStoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.document_category.store')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.document_category.move')) {
             return true;
         }
         return false;
@@ -28,8 +28,6 @@ class ApiStoreRequest extends Request
     public function rules()
     {
         return [
-            'name'          => 'required|max:255',
-            'parent'        => 'required|integer',
             'position'      => 'required|in:firstChild,lastChild,before,after',
             'related'       => 'required|integer'
         ];

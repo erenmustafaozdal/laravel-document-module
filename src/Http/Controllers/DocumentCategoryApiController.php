@@ -15,9 +15,12 @@ use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\UpdateSuccess
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\UpdateFail;
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\DestroySuccess;
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\DestroyFail;
+use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\MoveSuccess;
+use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\MoveFail;
 // requests
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiStoreRequest;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiUpdateRequest;
+use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiMoveRequest;
 
 
 class DocumentCategoryApiController extends AdminBaseController
@@ -26,11 +29,12 @@ class DocumentCategoryApiController extends AdminBaseController
      * Display a listing of the resource.
      *
      * @param  Request  $request
+     * @param integer|null $id
      * @return array
      */
-    public function index(Request $request)
+    public function index(Request $request, $id = null)
     {
-        return $this->getNodes(DocumentCategory::class, $request);
+        return $this->getNodes(DocumentCategory::class, $request, $id);
     }
 
     /**
@@ -41,7 +45,7 @@ class DocumentCategoryApiController extends AdminBaseController
      */
     public function store(ApiStoreRequest $request)
     {
-        return $this->storeModel(DocumentCategory::class, $request, [
+        return $this->storeNode(DocumentCategory::class, $request, [
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
@@ -50,27 +54,48 @@ class DocumentCategoryApiController extends AdminBaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  DocumentCategory $page_category
+     * @param  DocumentCategory $document_category
      * @param  ApiUpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(ApiUpdateRequest $request, DocumentCategory $page_category)
+    public function update(ApiUpdateRequest $request, DocumentCategory $document_category)
     {
-        return $this->updateModel($page_category, $request, [
+        $this->updateModel($document_category, $request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
+        ]);
+
+        return [
+            'id'        => $document_category->id,
+            'name'      => $document_category->name
+        ];
+    }
+
+    /**
+     * Move the specified node.
+     *
+     * @param  ApiMoveRequest $request
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function move(ApiMoveRequest $request, $id)
+    {
+        $document_category = DocumentCategory::findOrFail($id);
+        return $this->moveNode($document_category, $request, [
+            'success'   => MoveSuccess::class,
+            'fail'      => MoveFail::class
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DocumentCategory  $page_category
+     * @param  DocumentCategory  $document_category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DocumentCategory $page_category)
+    public function destroy(DocumentCategory $document_category)
     {
-        return $this->destroyModel($page_category, [
+        return $this->destroyModel($document_category, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);

@@ -7,7 +7,7 @@ ini_set('xdebug.max_nesting_level', 300);
 | Admin Routes
 |--------------------------------------------------------------------------
 */
-/*==========  Page Category Module  ==========*/
+/*==========  Document Category Module  ==========*/
 Route::group([
     'prefix' => config('laravel-document-module.url.admin_url_prefix'),
     'middleware' => config('laravel-document-module.url.middleware'),
@@ -27,9 +27,24 @@ Route::group([
             ]
         ]);
     }
+
+    // category categories
+    if (config('laravel-document-module.routes.admin.category_categories')) {
+        Route::resource(config('laravel-document-module.url.document_category') . '/{id}/' . config('laravel-document-module.url.document_category'), config('laravel-document-module.controller.document_category'), [
+            'names' => [
+                'index' => 'admin.document_category.document_category.index',
+                'create' => 'admin.document_category.document_category.create',
+                'store' => 'admin.document_category.document_category.store',
+                'show' => 'admin.document_category.document_category.show',
+                'edit' => 'admin.document_category.document_category.edit',
+                'update' => 'admin.document_category.document_category.update',
+                'destroy' => 'admin.document_category.document_category.destroy',
+            ]
+        ]);
+    }
 });
 
-/*==========  Page Module  ==========*/
+/*==========  Document Module  ==========*/
 Route::group([
     'prefix' => config('laravel-document-module.url.admin_url_prefix'),
     'middleware' => config('laravel-document-module.url.middleware'),
@@ -79,6 +94,8 @@ Route::group([
             'uses' => config('laravel-document-module.controller.document').'@notPublish'
         ]);
     }
+
+    // category documents
     if (config('laravel-document-module.routes.admin.category_documents')) {
         Route::resource(config('laravel-document-module.url.document_category') . '/{id}/' . config('laravel-document-module.url.document'), config('laravel-document-module.controller.document'), [
             'names' => [
@@ -101,7 +118,7 @@ Route::group([
 | Api Routes
 |--------------------------------------------------------------------------
 */
-/*==========  Page Category Module  ==========*/
+/*==========  Document Category Module  ==========*/
 Route::group([
     'prefix' => 'api',
     'middleware' => config('laravel-document-module.url.middleware'),
@@ -133,9 +150,17 @@ Route::group([
             ]
         ]);
     }
+
+    // category pages
+    if (config('laravel-document-module.routes.api.category_categories_index')) {
+        Route::get(config('laravel-document-module.url.document_category') . '/{id}/' . config('laravel-document-module.url.document_category'), [
+            'as' => 'api.document_category.document_category.index',
+            'uses' => config('laravel-document-module.controller.document_category_api').'@index'
+        ]);
+    }
 });
 
-/*==========  Page Module  ==========*/
+/*==========  Document Module  ==========*/
 Route::group([
     'prefix' => 'api',
     'middleware' => config('laravel-document-module.url.middleware'),
