@@ -43,12 +43,13 @@ class DocumentCategoryController extends AdminBaseController
      */
     public function create($id = null)
     {
+        $operation = 'create';
         if (is_null($id)) {
-            return view(config('laravel-document-module.views.document_category.create'));
+            return view(config('laravel-document-module.views.document_category.create'), compact('operation'));
         }
 
         $parent_document_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-document-module.views.document_category.create'), compact('parent_document_category'));
+        return view(config('laravel-document-module.views.document_category.create'), compact('parent_document_category','operation'));
     }
 
     /**
@@ -95,40 +96,68 @@ class DocumentCategoryController extends AdminBaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param DocumentCategory $document_category
+     * @param integer|DocumentCategory $firstId
+     * @param integer|null $secondId
      * @return \Illuminate\Http\Response
      */
-    public function edit(DocumentCategory $document_category)
+    public function edit($firstId, $secondId = null)
     {
-        return view(config('laravel-document-module.views.document_category.edit'), compact('document_category'));
+        $operation = 'edit';
+        $document_category = is_null($secondId) ? $firstId : $secondId;
+        if (is_null($secondId)) {
+            return view(config('laravel-document-module.views.document_category.edit'), compact('document_category','operation'));
+        }
+
+        $parent_document_category = DocumentCategory::findOrFail($firstId);
+        return view(config('laravel-document-module.views.document_category.edit'), compact('parent_document_category','document_category','operation'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest  $request
-     * @param  DocumentCategory  $document_category
+     * @param integer|DocumentCategory $firstId
+     * @param integer|null $secondId
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, DocumentCategory $document_category)
+    public function update(UpdateRequest $request, $firstId, $secondId = null)
     {
+        $document_category = is_null($secondId) ? $firstId : $secondId;
+        if (is_null($secondId)) {
+            $redirect = 'show';
+        } else {
+            $redirect = 'document_category.document_category.show';
+            $this->relatedModelId = $firstId;
+            $this->modelRouteRegex = config('laravel-page-module.url.document_category');
+        }
+
         return $this->updateModel($document_category,$request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
-        ], [],'show');
+        ], [],$redirect);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DocumentCategory  $document_category
+     * @param integer|DocumentCategory $firstId
+     * @param integer|null $secondId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DocumentCategory $document_category)
+    public function destroy($firstId, $secondId = null)
     {
+        $document_category = is_null($secondId) ? $firstId : $secondId;
+        if (is_null($secondId)) {
+            $redirect = 'index';
+        } else {
+            $redirect = 'document_category.document_category.index';
+            $this->relatedModelId = $firstId;
+            $this->modelRouteRegex = config('laravel-page-module.url.document_category');
+        }
+
         return $this->destroyModel($document_category, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
-        ], 'index');
+        ], $redirect);
     }
 }
