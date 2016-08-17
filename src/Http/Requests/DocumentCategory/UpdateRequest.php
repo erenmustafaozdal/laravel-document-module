@@ -29,9 +29,7 @@ class UpdateRequest extends Request
     {
         return [
             'name'          => 'required|max:255',
-            'parent'        => 'required|integer',
-            'position'      => 'required|in:firstChild,lastChild,before,after',
-            'related'       => 'required|integer'
+            'parent'        => 'integer'
         ];
     }
 }
