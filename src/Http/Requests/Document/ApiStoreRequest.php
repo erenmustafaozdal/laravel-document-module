@@ -14,7 +14,7 @@ class ApiStoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.page.store')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.document.store')) {
             return true;
         }
         return false;
@@ -27,11 +27,13 @@ class ApiStoreRequest extends Request
      */
     public function rules()
     {
+        $max = config('laravel-document-module.document.uploads.max_size');
+        $mimes = config('laravel-document-module.document.uploads.mimes');
         return [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255',
-            'slug'              => 'alpha_dash|max:255|unique:pages',
-            'description'       => 'max:255',
+            'document'          => "required|max:{$max}|mimes:{$mimes}",
+            'is_publish'        => 'boolean'
         ];
     }
 }
