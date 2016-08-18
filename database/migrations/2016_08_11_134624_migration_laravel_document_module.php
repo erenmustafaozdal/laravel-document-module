@@ -44,7 +44,7 @@ class MigrationLaravelDocumentModule extends Migration
 
                 $table->string('title');
 
-                $table->string('file_name');
+                $table->string('document');
                 $table->unsignedInteger('size');
                 $table->boolean('is_publish')->default(0);
                 $table->timestamps();

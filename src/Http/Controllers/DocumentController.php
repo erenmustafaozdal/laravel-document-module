@@ -33,11 +33,11 @@ class DocumentController extends AdminBaseController
     public function index($id = null)
     {
         if (is_null($id)) {
-            return view(config('laravel-page-module.views.page.index'));
+            return view(config('laravel-document-module.views.document.index'));
         }
 
-        $page_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-page-module.views.page.index'), compact('page_category'));
+        $document_category = DocumentCategory::findOrFail($id);
+        return view(config('laravel-document-module.views.document.index'), compact('document_category'));
     }
 
     /**
@@ -50,11 +50,11 @@ class DocumentController extends AdminBaseController
     {
         $operation = 'create';
         if (is_null($id)) {
-            return view(config('laravel-page-module.views.page.create'), compact('operation'));
+            return view(config('laravel-document-module.views.document.create'), compact('operation'));
         }
 
-        $page_category = DocumentCategory::findOrFail($id);
-        return view(config('laravel-page-module.views.page.create'), compact('page_category','operation'));
+        $document_category = DocumentCategory::findOrFail($id);
+        return view(config('laravel-document-module.views.document.create'), compact('document_category','operation'));
     }
 
     /**
@@ -69,9 +69,9 @@ class DocumentController extends AdminBaseController
         if (is_null($id)) {
             $redirect = 'index';
         } else {
-            $redirect = 'page_category.page.index';
+            $redirect = 'document_category.document.index';
             $this->relatedModelId = $id;
-            $this->modelRouteRegex = config('laravel-page-module.url.page');
+            $this->modelRouteRegex = config('laravel-document-module.url.document');
         }
 
         return $this->storeModel(Document::class, $request, [
@@ -89,13 +89,13 @@ class DocumentController extends AdminBaseController
      */
     public function show($firstId, $secondId = null)
     {
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
-            return view(config('laravel-page-module.views.page.show'), compact('page'));
+            return view(config('laravel-document-module.views.document.show'), compact('document'));
         }
 
-        $page_category = DocumentCategory::findOrFail($firstId);
-        return view(config('laravel-page-module.views.page.show'), compact('page', 'page_category'));
+        $document_category = DocumentCategory::findOrFail($firstId);
+        return view(config('laravel-document-module.views.document.show'), compact('document', 'document_category'));
     }
 
     /**
@@ -108,13 +108,13 @@ class DocumentController extends AdminBaseController
     public function edit($firstId, $secondId = null)
     {
         $operation = 'edit';
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
-            return view(config('laravel-page-module.views.page.edit'), compact('page','operation'));
+            return view(config('laravel-document-module.views.document.edit'), compact('document','operation'));
         }
 
-        $page_category = DocumentCategory::findOrFail($firstId);
-        return view(config('laravel-page-module.views.page.edit'), compact('page', 'page_category','operation'));
+        $document_category = DocumentCategory::findOrFail($firstId);
+        return view(config('laravel-document-module.views.document.edit'), compact('document', 'document_category','operation'));
     }
 
     /**
@@ -127,25 +127,25 @@ class DocumentController extends AdminBaseController
      */
     public function update(UpdateRequest $request, $firstId, $secondId = null)
     {
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
             $redirect = 'show';
         } else {
-            $redirect = 'page_category.page.show';
+            $redirect = 'document_category.document.show';
             $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.page');
+            $this->modelRouteRegex = config('laravel-document-module.url.document');
         }
 
-        $result = $this->updateModel($page,$request, [
+        $result = $this->updateModel($document,$request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ], [],$redirect);
 
         // publish
-        $request->has('is_publish') ? $this->updateModelPublish($page, true, [
+        $request->has('is_publish') ? $this->updateModelPublish($document, true, [
             'success'   => PublishSuccess::class,
             'fail'      => PublishFail::class
-        ]) : $this->updateModelPublish($page, false, [
+        ]) : $this->updateModelPublish($document, false, [
             'success'   => NotPublishSuccess::class,
             'fail'      => NotPublishFail::class
         ]);
@@ -161,16 +161,16 @@ class DocumentController extends AdminBaseController
      */
     public function destroy($firstId, $secondId = null)
     {
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
             $redirect = 'index';
         } else {
-            $redirect = 'page_category.page.index';
+            $redirect = 'document_category.document.index';
             $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.page');
+            $this->modelRouteRegex = config('laravel-document-module.url.document');
         }
 
-        return $this->destroyModel($page, [
+        return $this->destroyModel($document, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ], $redirect);
@@ -185,15 +185,15 @@ class DocumentController extends AdminBaseController
      */
     public function publish($firstId, $secondId = null)
     {
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
             $redirect = 'show';
         } else {
-            $redirect = 'page_category.page.show';
+            $redirect = 'document_category.document.show';
             $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.page');
+            $this->modelRouteRegex = config('laravel-document-module.url.document');
         }
-        return $this->updateModelPublish($page, true, [
+        return $this->updateModelPublish($document, true, [
             'success'   => PublishSuccess::class,
             'fail'      => PublishFail::class
         ],$redirect);
@@ -208,15 +208,15 @@ class DocumentController extends AdminBaseController
      */
     public function notPublish($firstId, $secondId = null)
     {
-        $page = is_null($secondId) ? $firstId : $secondId;
+        $document = is_null($secondId) ? $firstId : $secondId;
         if (is_null($secondId)) {
             $redirect = 'show';
         } else {
-            $redirect = 'page_category.page.show';
+            $redirect = 'document_category.document.show';
             $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.page');
+            $this->modelRouteRegex = config('laravel-document-module.url.document');
         }
-        return $this->updateModelPublish($page, false, [
+        return $this->updateModelPublish($document, false, [
             'success'   => NotPublishSuccess::class,
             'fail'      => NotPublishFail::class
         ],$redirect);
