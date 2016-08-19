@@ -22,7 +22,8 @@ class Document extends Model
     protected $fillable = [
         'category_id',
         'title',
-        'file_name',
+        'document',
+        'size',
         'is_publish'
     ];
 
@@ -53,9 +54,9 @@ class Document extends Model
         if ($request->has('title')) {
             $query->where('title', 'like', "%{$request->get('title')}%");
         }
-        // filter file_name
-        if ($request->has('file_name')) {
-            $query->where('file_name', 'like', "%{$request->get('file_name')}%");
+        // filter document
+        if ($request->has('document')) {
+            $query->where('document', 'like', "%{$request->get('document')}%");
         }
         // filter category
         if ($request->has('category')) {
@@ -148,6 +149,19 @@ class Document extends Model
     public function getSizeAttribute($size)
     {
         return (int) $size;
+    }
+
+    /**
+     * Get the size attribute for datatable.
+     *
+     * @return array
+     */
+    public function getSizeTableAttribute()
+    {
+        return [
+            'display'       => humanFileSize($this->size),
+            'number'        => $this->size
+        ];
     }
 
     /**

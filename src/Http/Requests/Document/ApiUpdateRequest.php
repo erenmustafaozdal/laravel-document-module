@@ -29,8 +29,7 @@ class ApiUpdateRequest extends Request
     {
         return [
             'category_id'       => 'required|integer',
-            'title'             => 'required|max:255',
-            'is_publish'        => 'boolean'
+            'title'             => 'required|max:255'
         ];
     }
 }
