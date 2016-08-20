@@ -90,9 +90,9 @@ return [
         'document' => [
             'layout'                => 'laravel-modules-core::layouts.admin',           // user layout
             'index'                 => 'laravel-modules-core::document.index',          // get document index view blade
-            'create'                => 'laravel-modules-core::document.create',         // get document create view blade
+            'create'                => 'laravel-modules-core::document.operation',      // get document create view blade
             'show'                  => 'laravel-modules-core::document.show',           // get document show view blade
-            'edit'                  => 'laravel-modules-core::document.edit',           // get document edit view blade
+            'edit'                  => 'laravel-modules-core::document.operation',      // get document edit view blade
         ]
     ],
 
