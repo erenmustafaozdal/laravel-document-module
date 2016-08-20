@@ -104,9 +104,10 @@ return [
     'document' => [
         'default_img_path' => 'vendor/laravel-modules-core/assets/global/img/document',
         'uploads' => [
-            'mimes'                 => 'doc,docm,dotm,dot,pdf,xls,xlm,xla,xlc,xlt,xlw,mpp,mpt,xlam,xlsb,xlsm,xltm,thmx,ppt,pps,pot,ppam,pptm,sldm,ppsm,potm,xml,xsl,jpeg,jpg,jpe,png,gif,psd,css,csv,html,htm,txt,text,conf,def,list,log,in,json,odc,otc,odb,odf,odft,odg,otg,odi,oti,odp,otp,ods,ots,odt,odm,ott,oth', // virgül ile ayır
+            'mimes'                 => 'doc,docx,docm,dotm,dot,pdf,xls,xlsx,xlm,xla,xlc,xlt,xlw,mpp,mpt,xlam,xlsb,xlsm,xltm,thmx,ppt,pps,pot,ppam,pptm,sldm,ppsm,potm,xml,xsl,jpeg,jpg,jpe,png,gif,psd,css,csv,html,htm,txt,text,conf,def,list,log,in,json,odc,otc,odb,odf,odft,odg,otg,odi,oti,odp,otp,ods,ots,odt,odm,ott,oth', // virgül ile ayır
             'max_size'              => '5120', // belge maksimum büyüklük (bayt cinsinden)
-            'column'                => 'photo.photo',
+            'column'                => 'photo.photo', // fotoğraf sütunu $document->photo->photo
+            'file_column'           => 'document', // belge sütunu
             'path'                  => 'uploads/document', // + /{id}/original && /{id}/thumbnail
             // bütün küçük resim boyutları
             // thumbnails fotoğrafları yüklenirken bakılır:

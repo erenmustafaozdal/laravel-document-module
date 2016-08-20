@@ -21,6 +21,8 @@ use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\MoveFail;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiStoreRequest;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiUpdateRequest;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiMoveRequest;
+// services
+use LMBCollection;
 
 
 class DocumentCategoryApiController extends AdminBaseController
@@ -109,6 +111,18 @@ class DocumentCategoryApiController extends AdminBaseController
      */
     public function models(Request $request)
     {
-        return DocumentCategory::where('name', 'like', "%{$request->input('query')}%")->get(['id','name']);
+        if($request->has('id')) {
+            $document_category = DocumentCategory::find($request->input('id'));
+            $models = $document_category->descendants()
+                ->where('name', 'like', "%{$request->input('query')}%")
+                ->get(['id','parent_id','lft','rgt','depth','name'])
+                ->toHierarchy();
+        } else {
+            $models = DocumentCategory::where('name', 'like', "%{$request->input('query')}%")
+                ->get(['id','parent_id','lft','rgt','depth','name'])
+                ->toHierarchy();
+        }
+
+        return LMBCollection::relationRender($models, 'children');
     }
 }
