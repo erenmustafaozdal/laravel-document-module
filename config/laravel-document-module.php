@@ -60,6 +60,7 @@ return [
             'document_category'             => true,                // api document category resource route
             'document_category_models'      => true,                // api document category model post route
             'document_category_move'        => true,                // api document category move post route
+            'document_category_detail'      => true,                // api document category detail get route
             'document'                      => true,                // api document resource route
             'document_group'                => true,                // api document group post route
             'document_detail'               => true,                // api document detail get route

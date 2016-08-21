@@ -120,7 +120,7 @@ class DocumentCategory extends Node
      * @param boolean $has_description
      * @return string
      */
-    public function setHasDescritionAttribute($has_description)
+    public function setHasDescriptionAttribute($has_description)
     {
         $this->attributes['has_description'] = $has_description == 1 || $has_description === 'true' || $has_description === true ? true : false;
     }
@@ -131,7 +131,7 @@ class DocumentCategory extends Node
      * @param boolean $has_description
      * @return string
      */
-    public function getHasDescritionAttribute($has_description)
+    public function getHasDescriptionAttribute($has_description)
     {
         return $has_description == 1 ? true : false;
     }

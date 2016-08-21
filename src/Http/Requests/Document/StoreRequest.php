@@ -32,8 +32,7 @@ class StoreRequest extends Request
         return [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255',
-            'document'          => "required|max:{$max}|mimes:{$mimes}",
-            'is_publish'        => 'boolean'
+            'document'          => "required|max:{$max}|mimes:{$mimes}"
         ];
     }
 }

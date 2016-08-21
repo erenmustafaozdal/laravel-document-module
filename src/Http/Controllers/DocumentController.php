@@ -66,6 +66,7 @@ class DocumentController extends AdminBaseController
      */
     public function store(StoreRequest $request, $id = null)
     {
+        dd($request->all());
         if (is_null($id)) {
             $redirect = 'index';
         } else {
