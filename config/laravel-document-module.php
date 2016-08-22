@@ -101,30 +101,60 @@ return [
     |--------------------------------------------------------------------------
     | Models config
     |--------------------------------------------------------------------------
+    |
+    | ## Options
+    |
+    | - default_img_path                : model default avatar or photo
+    |
+    | --- uploads                       : model uploads options
+    | - type                            : file type [image,file]
+    | - number_type                     : file number type [multiple,single]
+    | - column                          : file database column
+    | - path                            : file path
+    | - max_size                        : file allowed maximum size
+    | - aspect_ratio                    : if file is image; crop aspect ratio
+    | - mimes                           : file allowed mimes
+    | - thumbnails                      : if file is image; its thumbnails options
+    |
+    | NOT: Thumbnails fotoğrafları yüklenirken bakılır:
+    |       1. eğer post olarak x1, y1, x2, y2, width ve height değerleri gönderilmemiş ise bu değerlere göre
+    |       thumbnails ayarlarında belirtilen resimleri sistem içine kaydeder.
+    |       Yani bu değerler post edilmişse aşağıdaki değerleri yok sayar.
+    |       2. Eğer yukarıdaki ilgili değerler post edilmemişse, thumbnails ayarlarında belirtilen değerleri
+    |       dikkate alarak thumbnails oluşturur
+    |
+    |       Ölçü Belirtme:
+    |       1. İstenen resmin width ve height değerleri verilerek istenen net bir ölçüde resimler oluşturulabilir
+    |       2. Width değeri null verilerek, height değerine göre ölçeklenebilir
+    |       3. Height değeri null verilerek, width değerine göre ölçeklenebilir
+    |--------------------------------------------------------------------------
     */
     'document' => [
-        'default_img_path' => 'vendor/laravel-modules-core/assets/global/img/document',
+        'default_img_path'              => 'vendor/laravel-modules-core/assets/global/img/document',
         'uploads' => [
-            'mimes'                 => 'doc,docx,docm,dotm,dot,pdf,xls,xlsx,xlm,xla,xlc,xlt,xlw,mpp,mpt,xlam,xlsb,xlsm,xltm,thmx,ppt,pps,pot,ppam,pptm,sldm,ppsm,potm,xml,xsl,jpeg,jpg,jpe,png,gif,psd,css,csv,html,htm,txt,text,conf,def,list,log,in,json,odc,otc,odb,odf,odft,odg,otg,odi,oti,odp,otp,ods,ots,odt,odm,ott,oth', // virgül ile ayır
-            'max_size'              => '5120', // belge maksimum büyüklük (bayt cinsinden)
-            'column'                => 'photo.photo', // fotoğraf sütunu $document->photo->photo
-            'aspect_ratio'          => 4/3, // fotoğraf genişlik/yükseklik boy oranı
-            'file_column'           => 'document', // belge sütunu
-            'path'                  => 'uploads/document', // + /{id}/original && /{id}/thumbnail
-            // bütün küçük resim boyutları
-            // thumbnails fotoğrafları yüklenirken bakılır:
-            // 1. eğer post olarak x1, y1, x2, y2, width ve height değerleri gönderilmemiş ise bu değerlere göre aşağıda
-            //      belirtilen resimleri sistem içine kaydeder. Yani bu değerler post edilmişse aşağıdaki değerleri yok sayar
-            // 2. Eğer yukarıdaki ilgili değerler post edilmemişse, aşağıdaki değerleri dikkate alarak thumbnails oluşturur
-
-            // Ölçü Belirtme
-            // 1. istenen resmin width ve height değerleri verilerek istenen net bir ölçüde resimler oluşturulabilir
-            // 2. width değeri null verilerek, height değerine göre ölçeklenebilir
-            // 3. height değeri null verilerek, width değerine göre ölçeklenebilir
-            'thumbnails' => [
-                'small'     => [ 'width' => 35, 'height' => null],
-                'normal'    => [ 'width' => 300, 'height' => null],
-                'big'       => [ 'width' => 800, 'height' => null],
+            // document options
+            'file' => [
+                'type'                  => 'file',
+                'number_type'           => 'single',
+                'column'                => 'document',
+                'path'                  => 'uploads/document',
+                'max_size'              => '5120',
+                'mimes'                 => 'doc,docx,docm,dotm,dot,pdf,xls,xlsx,xlm,xla,xlc,xlt,xlw,mpp,mpt,xlam,xlsb,xlsm,xltm,thmx,ppt,pps,pot,ppam,pptm,sldm,ppsm,potm,xml,xsl,jpeg,jpg,jpe,png,gif,psd,css,csv,html,htm,txt,text,conf,def,list,log,in,json,odc,otc,odb,odf,odft,odg,otg,odi,oti,odp,otp,ods,ots,odt,odm,ott,oth'
+            ],
+            // document photo options
+            'photo' => [
+                'type'                  => 'image',
+                'number_type'           => 'single',
+                'column'                => 'photo.photo',
+                'path'                  => 'uploads/document',
+                'max_size'              => '5120',
+                'aspect_ratio'          => 16/9,
+                'mimes'                 => 'jpeg,jpg,jpe,png',
+                'thumbnails' => [
+                    'small'             => [ 'width' => 35, 'height' => 35],
+                    'normal'            => [ 'width' => 300, 'height' => 300],
+                    'big'               => [ 'width' => 800, 'height' => 800],
+                ]
             ]
         ]
     ],

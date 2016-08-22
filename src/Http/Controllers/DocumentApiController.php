@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Document;
 use App\DocumentCategory;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseFileController;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 // events
 use ErenMustafaOzdal\LaravelDocumentModule\Events\Document\StoreSuccess;
@@ -26,8 +26,19 @@ use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\ApiStoreReques
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\ApiUpdateRequest;
 
 
-class DocumentApiController extends AdminBaseController
+class DocumentApiController extends BaseFileController
 {
+    /**
+     * default urls of the model
+     *
+     * @var array
+     */
+    private $urls = [
+        'publish'       => ['route' => 'api.document.publish', 'id' => true],
+        'not_publish'   => ['route' => 'api.document.notPublish', 'id' => true],
+        'edit_page'     => ['route' => 'admin.document.edit', 'id' => true]
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -51,22 +62,20 @@ class DocumentApiController extends AdminBaseController
         }
 
         // urls
-        $addUrls = [
-            'publish'       => ['route' => 'api.document.publish', 'id' => true],
-            'not_publish'   => ['route' => 'api.document.notPublish', 'id' => true],
-            'edit_page'     => ['route' => 'admin.document.edit', 'id' => true]
-        ];
+        $addUrls = $this->urls;
         if( ! is_null($id)) {
-            $addUrls['edit_page'] = [
-                'route'     => 'admin.document_category.document.edit',
-                'id'        => $id,
-                'model'     => config('laravel-document-module.url.document')
-            ];
-            $addUrls['show'] = [
-                'route'     => 'admin.document_category.document.show',
-                'id'        => $id,
-                'model'     => config('laravel-document-module.url.document')
-            ];
+            array_merge($addUrls, [
+                'edit_page' => [
+                    'route'     => 'admin.document_category.document.edit',
+                    'id'        => $id,
+                    'model'     => config('laravel-document-module.url.document')
+                ],
+                'show' => [
+                    'route'     => 'admin.document_category.document.show',
+                    'id'        => $id,
+                    'model'     => config('laravel-document-module.url.document')
+                ]
+            ]);
         }
         $addColumns = [
             'addUrls'           => $addUrls,

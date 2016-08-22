@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\DocumentCategory;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseNodeController;
 // events
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\StoreSuccess;
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\StoreFail;
@@ -25,7 +25,7 @@ use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\ApiMov
 use LMBCollection;
 
 
-class DocumentCategoryApiController extends AdminBaseController
+class DocumentCategoryApiController extends BaseNodeController
 {
     /**
      * Display a listing of the resource.
@@ -36,7 +36,7 @@ class DocumentCategoryApiController extends AdminBaseController
      */
     public function index(Request $request, $id = null)
     {
-        return $this->getNodes(DocumentCategory::class, $request, $id);
+        return $this->getNodes(DocumentCategory::class, $id);
     }
 
     /**
