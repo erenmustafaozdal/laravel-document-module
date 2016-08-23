@@ -6,7 +6,7 @@ use App\Http\Requests;
 use App\Document;
 use App\DocumentCategory;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseController;
 // events
 use ErenMustafaOzdal\LaravelDocumentModule\Events\Document\StoreSuccess;
 use ErenMustafaOzdal\LaravelDocumentModule\Events\Document\StoreFail;
@@ -22,7 +22,7 @@ use ErenMustafaOzdal\LaravelDocumentModule\Events\Document\NotPublishFail;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\StoreRequest;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\UpdateRequest;
 
-class DocumentController extends AdminBaseController
+class DocumentController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -66,19 +66,29 @@ class DocumentController extends AdminBaseController
      */
     public function store(StoreRequest $request, $id = null)
     {
-        dd($request->all());
         if (is_null($id)) {
             $redirect = 'index';
         } else {
             $redirect = 'document_category.document.index';
-            $this->relatedModelId = $id;
-            $this->modelRouteRegex = config('laravel-document-module.url.document');
+            $this->setRelationRouteParam($id, config('laravel-document-module.url.document'));
         }
 
-        return $this->storeModel(Document::class, $request, [
+        $this->setFileOptions(config('laravel-document-module.document.uploads'));
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
-        ], [], $redirect);
+        ]);
+        $this->setOperationRelation([
+            [
+                'relation_type'     => 'hasOne',
+                'relation'          => 'description',
+                'relation_model'    => '\App\DocumentDescription',
+                'datas' => [
+                    'description'   => $request->description
+                ]
+            ]
+        ]);
+        return $this->storeModel(Document::class,$redirect);
     }
 
     /**

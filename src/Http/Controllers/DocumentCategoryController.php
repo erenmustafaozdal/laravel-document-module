@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelDocumentModule\Http\Controllers;
 use App\Http\Requests;
 use App\DocumentCategory;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseNodeController;
 // events
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\StoreSuccess;
 use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\StoreFail;
@@ -17,7 +17,7 @@ use ErenMustafaOzdal\LaravelDocumentModule\Events\DocumentCategory\DestroyFail;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\StoreRequest;
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\DocumentCategory\UpdateRequest;
 
-class DocumentCategoryController extends AdminBaseController
+class DocumentCategoryController extends BaseNodeController
 {
     /**
      * Display a listing of the resource.
@@ -65,14 +65,14 @@ class DocumentCategoryController extends AdminBaseController
             $redirect = 'index';
         } else {
             $redirect = 'document_category.document_category.index';
-            $this->relatedModelId = $id;
-            $this->modelRouteRegex = config('laravel-document-module.url.document_category');
+            $this->setRelationRouteParam($id, config('laravel-document-module.url.document_category'));
         }
 
-        return $this->storeNode(DocumentCategory::class, $request, [
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
-        ],$redirect);
+        ]);
+        return $this->storeModel(DocumentCategory::class,$redirect);
     }
 
     /**
@@ -127,14 +127,14 @@ class DocumentCategoryController extends AdminBaseController
             $redirect = 'show';
         } else {
             $redirect = 'document_category.document_category.show';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.document_category');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document_category'));
         }
 
-        return $this->updateModel($document_category,$request, [
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
-        ], [],$redirect);
+        ]);
+        return $this->updateModel($document_category, $redirect);
     }
 
     /**
@@ -151,13 +151,13 @@ class DocumentCategoryController extends AdminBaseController
             $redirect = 'index';
         } else {
             $redirect = 'document_category.document_category.index';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-page-module.url.document_category');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document_category'));
         }
 
-        return $this->destroyModel($document_category, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
-        ], $redirect);
+        ]);
+        return $this->destroyModel($document_category, $redirect);
     }
 }

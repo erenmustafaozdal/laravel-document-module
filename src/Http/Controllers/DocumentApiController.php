@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Document;
 use App\DocumentCategory;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseFileController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseController;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 // events
 use ErenMustafaOzdal\LaravelDocumentModule\Events\Document\StoreSuccess;
@@ -26,7 +26,7 @@ use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\ApiStoreReques
 use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\ApiUpdateRequest;
 
 
-class DocumentApiController extends BaseFileController
+class DocumentApiController extends BaseController
 {
     /**
      * default urls of the model
@@ -103,13 +103,21 @@ class DocumentApiController extends BaseFileController
             {
                 return $query->select(['id','name']);
             },
-            'description','photo'
+            'description' => function($query)
+            {
+                return $query->select(['id','document_id','description']);
+            },
+            'photo' => function($query)
+            {
+                return $query->select(['id','document_id','photo']);
+            }
         ])->where('id',$id)->select(['id','category_id','title','document','size','created_at','updated_at']);
 
         $editColumns = [
             'size'          => function($model) { return $model->size_table; },
             'created_at'    => function($model) { return $model->created_at_table; },
-            'updated_at'    => function($model) { return $model->updated_at_table; }
+            'updated_at'    => function($model) { return $model->updated_at_table; },
+            'photo.photo'   => function($model) { return $model->photo->getPhoto([], 'big', true, 'document','document'); },
         ];
         return $this->getDatatables($document, [], $editColumns, []);
     }
@@ -139,10 +147,12 @@ class DocumentApiController extends BaseFileController
      */
     public function store(ApiStoreRequest $request)
     {
-        return $this->storeModel(Document::class, $request, [
+        $this->setFileOptions([config('laravel-document-module.document.uploads.file')]);
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
-        ], config('laravel-document-module.document.uploads'), null, true);
+        ]);
+        return $this->storeModel(Document::class);
     }
 
     /**
@@ -154,26 +164,29 @@ class DocumentApiController extends BaseFileController
      */
     public function update(ApiUpdateRequest $request, Document $document)
     {
-        return $this->updateModel($document, $request, [
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
+        return $this->updateModel($document);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  FileRepository  $file
      * @param  Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FileRepository $file, Document $document)
+    public function destroy(Document $document)
     {
-        $file->deleteDirectory(config('laravel-document-module.document.uploads.path') . "/{$document->id}");
-        return $this->destroyModel($document, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
+        $result =  $this->destroyModel($document);
+        $file = new FileRepository(config('laravel-document-module.document.uploads'));
+        $file->deleteDirectories($document);
+        return $result;
     }
 
     /**
@@ -184,7 +197,10 @@ class DocumentApiController extends BaseFileController
      */
     public function publish(Document $document)
     {
-        return $this->updateModelPublish($document, true, [
+        $this->setOperationRelation([
+            [ 'relation_type'     => 'not', 'datas' => [ 'is_publish'    => true ] ]
+        ]);
+        return $this->updateAlias($document, [
             'success'   => PublishSuccess::class,
             'fail'      => PublishFail::class
         ]);
@@ -198,7 +214,10 @@ class DocumentApiController extends BaseFileController
      */
     public function notPublish(Document $document)
     {
-        return $this->updateModelPublish($document, false, [
+        $this->setOperationRelation([
+            [ 'relation_type'     => 'not', 'datas' => [ 'is_publish'    => false ] ]
+        ]);
+        return $this->updateAlias($document, [
             'success'   => NotPublishSuccess::class,
             'fail'      => NotPublishFail::class
         ]);
@@ -207,30 +226,12 @@ class DocumentApiController extends BaseFileController
     /**
      * group action method
      *
-     * @param  FileRepository  $file
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function group(FileRepository  $file, Request $request)
+    public function group(Request $request)
     {
-        $events = [];
-        switch($request->input('action')) {
-            case 'publish':
-                $events['success'] = PublishSuccess::class;
-                $events['fail'] = PublishFail::class;
-                break;
-            case 'not_publish':
-                $events['success'] = NotPublishSuccess::class;
-                $events['fail'] = NotPublishFail::class;
-                break;
-            case 'destroy':
-                foreach($request->input('id') as $id) {
-                    $file->deleteDirectory(config('laravel-document-module.document.uploads.path') . "/{$id}");
-                }
-                break;
-        }
-        $action = camel_case($request->input('action')) . 'GroupAction';
-        if ( $this->$action(Document::class, $request->input('id'), $events) ) {
+        if ( $this->groupAlias(Document::class) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);

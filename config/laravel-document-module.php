@@ -107,6 +107,8 @@ return [
     | - default_img_path                : model default avatar or photo
     |
     | --- uploads                       : model uploads options
+    | - relation                        : file is in the relation table and what is relation type [false|hasOne|hasMany]
+    | - relation_model                  : relation model [\App\Model etc...]
     | - type                            : file type [image,file]
     | - number_type                     : file number type [multiple,single]
     | - column                          : file database column
@@ -134,15 +136,19 @@ return [
         'uploads' => [
             // document options
             'file' => [
+                'relation'              => false,
+                'relation_model'        => null,
                 'type'                  => 'file',
                 'number_type'           => 'single',
                 'column'                => 'document',
                 'path'                  => 'uploads/document',
                 'max_size'              => '5120',
-                'mimes'                 => 'doc,docx,docm,dotm,dot,pdf,xls,xlsx,xlm,xla,xlc,xlt,xlw,mpp,mpt,xlam,xlsb,xlsm,xltm,thmx,ppt,pps,pot,ppam,pptm,sldm,ppsm,potm,xml,xsl,jpeg,jpg,jpe,png,gif,psd,css,csv,html,htm,txt,text,conf,def,list,log,in,json,odc,otc,odb,odf,odft,odg,otg,odi,oti,odp,otp,ods,ots,odt,odm,ott,oth'
+                'mimes'                 => 'conf,css,csv,def,doc,docm,docx,dot,dotm,gif,htm,html,in,jpe,jpeg,jpg,json,list,log,mpp,mpt,odb,odc,odf,odft,odg,odi,odm,odp,ods,odt,otc,otg,oth,oti,otp,ots,ott,pdf,png,pot,potm,ppam,pps,ppsm,ppt,pptm,psd,sldm,text,thmx,txt,xla,xlam,xlc,xlm,xls,xlsb,xlsm,xlsx,xlt,xltm,xlw,xml,xsl'
             ],
             // document photo options
             'photo' => [
+                'relation'              => 'hasOne',
+                'relation_model'        => '\App\DocumentPhoto',
                 'type'                  => 'image',
                 'number_type'           => 'single',
                 'column'                => 'photo.photo',

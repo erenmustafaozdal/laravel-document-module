@@ -61,10 +61,11 @@ class DocumentCategoryApiController extends BaseNodeController
      */
     public function store(ApiStoreRequest $request)
     {
-        return $this->storeNode(DocumentCategory::class, $request, [
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
+        return $this->storeNode(DocumentCategory::class);
     }
 
     /**
@@ -76,10 +77,11 @@ class DocumentCategoryApiController extends BaseNodeController
      */
     public function update(ApiUpdateRequest $request, DocumentCategory $document_category)
     {
-        $this->updateModel($document_category, $request, [
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
+        $this->updateModel($document_category);
 
         return [
             'id'        => $document_category->id,
@@ -97,10 +99,11 @@ class DocumentCategoryApiController extends BaseNodeController
     public function move(ApiMoveRequest $request, $id)
     {
         $document_category = DocumentCategory::findOrFail($id);
-        return $this->moveNode($document_category, $request, [
+        $this->setEvents([
             'success'   => MoveSuccess::class,
             'fail'      => MoveFail::class
         ]);
+        return $this->moveModel($document_category);
     }
 
     /**
@@ -111,10 +114,11 @@ class DocumentCategoryApiController extends BaseNodeController
      */
     public function destroy(DocumentCategory $document_category)
     {
-        return $this->destroyModel($document_category, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
+        return $this->destroyModel($document_category);
     }
 
     /**
@@ -127,16 +131,14 @@ class DocumentCategoryApiController extends BaseNodeController
     {
         if($request->has('id')) {
             $document_category = DocumentCategory::find($request->input('id'));
-            $models = $document_category->descendants()
-                ->where('name', 'like', "%{$request->input('query')}%")
-                ->get(['id','parent_id','lft','rgt','depth','name'])
-                ->toHierarchy();
+            $models = $document_category->descendants()->where('name', 'like', "%{$request->input('query')}%");
+
         } else {
-            $models = DocumentCategory::where('name', 'like', "%{$request->input('query')}%")
-                ->get(['id','parent_id','lft','rgt','depth','name'])
-                ->toHierarchy();
+            $models = DocumentCategory::where('name', 'like', "%{$request->input('query')}%");
         }
 
+        $models = $models->get(['id','parent_id','lft','rgt','depth','name'])
+            ->toHierarchy();
         return LMBCollection::relationRender($models, 'children');
     }
 }

@@ -28,7 +28,8 @@ class DocumentPhoto extends Model
      *
      * @var array
      */
-    protected $touches = ['documents'];
+    protected $touches = ['document'];
+    public $timestamps = false;
 
 
 
