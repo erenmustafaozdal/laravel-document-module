@@ -27,12 +27,13 @@ class ApiStoreRequest extends Request
      */
     public function rules()
     {
-        $max = config('laravel-document-module.document.uploads.file.max_size');
         $mimes = config('laravel-document-module.document.uploads.file.mimes');
+        $max = config('laravel-document-module.document.uploads.file.max_size');
+        $documentValidation = $this->has('document') && $this->file('document') ? "required|max:{$max}|mimes:{$mimes}" : "required";
         return [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255',
-            'document'          => "required|max:{$max}|mimes:{$mimes}"
+            'document'          => $documentValidation
         ];
     }
 }

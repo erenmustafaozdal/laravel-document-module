@@ -27,10 +27,15 @@ class UpdateRequest extends Request
      */
     public function rules()
     {
+        $max_photo = config('laravel-document-module.document.uploads.photo.max_size');
+        $mimes_photo = config('laravel-document-module.document.uploads.photo.mimes');
+        $photoValidation = $this->has('photo') && $this->file('photo')
+            ? "required|max:{$max_photo}|image|mimes:{$mimes_photo}"
+            : "required";
         return [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255',
-            'is_publish'        => 'boolean'
+            'photo'             => $photoValidation
         ];
     }
 }
