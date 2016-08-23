@@ -117,7 +117,7 @@ class DocumentApiController extends BaseController
             'size'          => function($model) { return $model->size_table; },
             'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; },
-            'photo.photo'   => function($model) { return $model->photo->getPhoto([], 'big', true, 'document','document'); },
+            'photo.photo'   => function($model) { return !is_null($model->photo) ? $model->photo->getPhoto([], 'big', true, 'document','document') : ''; },
         ];
         return $this->getDatatables($document, [], $editColumns, []);
     }
