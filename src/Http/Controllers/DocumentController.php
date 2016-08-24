@@ -153,23 +153,25 @@ class DocumentController extends BaseController
             $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
 
-        $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
         if ( $request->has('photo') && ! $request->file('photo') ) {
+            $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
             $this->setElfinderToOptions('photo.photo');
+        }
+        if ( $request->has('description')) {
+            $this->setOperationRelation([
+                [
+                    'relation_type' => 'hasOne',
+                    'relation' => 'description',
+                    'relation_model' => '\App\DocumentDescription',
+                    'datas' => [
+                        'description' => $request->has('description') ? $request->description : null
+                    ]
+                ]
+            ]);
         }
         $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
-        ]);
-        $this->setOperationRelation([
-            [
-                'relation_type'     => 'hasOne',
-                'relation'          => 'description',
-                'relation_model'    => '\App\DocumentDescription',
-                'datas' => [
-                    'description'   => $request->has('description') ? $request->description : null
-                ]
-            ]
         ]);
         return $this->updateModel($document,$redirect);
     }
@@ -188,14 +190,14 @@ class DocumentController extends BaseController
             $redirect = 'index';
         } else {
             $redirect = 'document_category.document.index';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-document-module.url.document');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
 
-        return $this->destroyModel($document, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
-        ], $redirect);
+        ]);
+        return $this->destroyModel($document,$redirect);
     }
 
     /**

@@ -64,7 +64,7 @@ class DocumentApiController extends BaseController
         // urls
         $addUrls = $this->urls;
         if( ! is_null($id)) {
-            array_merge($addUrls, [
+            $addUrls = array_merge($addUrls, [
                 'edit_page' => [
                     'route'     => 'admin.document_category.document.edit',
                     'id'        => $id,

@@ -38,7 +38,6 @@ class DocumentCategory extends Node
      */
     public function setNode(Request $request, $type = 'store')
     {
-        dd($request->all());
         if ( ! $request->has('position')) {
             $model = DocumentCategory::find($request->input('parent'));
             $this->makeChildOf($model);
