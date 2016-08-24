@@ -91,7 +91,7 @@ class DocumentController extends BaseController
                 'relation'          => 'description',
                 'relation_model'    => '\App\DocumentDescription',
                 'datas' => [
-                    'description'   => $request->description
+                    'description'   => $request->has('description') ? $request->description : null
                 ]
             ]
         ]);
@@ -150,24 +150,28 @@ class DocumentController extends BaseController
             $redirect = 'show';
         } else {
             $redirect = 'document_category.document.show';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-document-module.url.document');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
 
-        $result = $this->updateModel($document,$request, [
+        $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
+        if ( $request->has('photo') && ! $request->file('photo') ) {
+            $this->setElfinderToOptions('photo.photo');
+        }
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
-        ], [],$redirect);
-
-        // publish
-        $request->has('is_publish') ? $this->updateModelPublish($document, true, [
-            'success'   => PublishSuccess::class,
-            'fail'      => PublishFail::class
-        ]) : $this->updateModelPublish($document, false, [
-            'success'   => NotPublishSuccess::class,
-            'fail'      => NotPublishFail::class
         ]);
-        return $result;
+        $this->setOperationRelation([
+            [
+                'relation_type'     => 'hasOne',
+                'relation'          => 'description',
+                'relation_model'    => '\App\DocumentDescription',
+                'datas' => [
+                    'description'   => $request->has('description') ? $request->description : null
+                ]
+            ]
+        ]);
+        return $this->updateModel($document,$redirect);
     }
 
     /**
@@ -208,10 +212,13 @@ class DocumentController extends BaseController
             $redirect = 'show';
         } else {
             $redirect = 'document_category.document.show';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-document-module.url.document');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
-        return $this->updateModelPublish($document, true, [
+
+        $this->setOperationRelation([
+            [ 'relation_type'     => 'not', 'datas' => [ 'is_publish'    => true ] ]
+        ]);
+        return $this->updateAlias($document, [
             'success'   => PublishSuccess::class,
             'fail'      => PublishFail::class
         ],$redirect);
@@ -231,12 +238,15 @@ class DocumentController extends BaseController
             $redirect = 'show';
         } else {
             $redirect = 'document_category.document.show';
-            $this->relatedModelId = $firstId;
-            $this->modelRouteRegex = config('laravel-document-module.url.document');
+            $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
-        return $this->updateModelPublish($document, false, [
-            'success'   => NotPublishSuccess::class,
-            'fail'      => NotPublishFail::class
+
+        $this->setOperationRelation([
+            [ 'relation_type'     => 'not', 'datas' => [ 'is_publish'    => false ] ]
+        ]);
+        return $this->updateAlias($document, [
+            'success'   => PublishSuccess::class,
+            'fail'      => PublishFail::class
         ],$redirect);
     }
 }
