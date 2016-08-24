@@ -4,9 +4,12 @@ namespace ErenMustafaOzdal\LaravelDocumentModule;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
 class Document extends Model
 {
+    use ModelDataTrait;
+
     /**
      * The database table used by the model.
      *
@@ -152,6 +155,16 @@ class Document extends Model
     }
 
     /**
+     * Get the size attribute for humans.
+     *
+     * @return string
+     */
+    public function getSizeForHumansAttribute()
+    {
+        return humanFileSize($this->size);
+    }
+
+    /**
      * Get the size attribute for datatable.
      *
      * @return array
@@ -159,7 +172,7 @@ class Document extends Model
     public function getSizeTableAttribute()
     {
         return [
-            'display'       => humanFileSize($this->size),
+            'display'       => $this->size_for_humans,
             'number'        => $this->size
         ];
     }
