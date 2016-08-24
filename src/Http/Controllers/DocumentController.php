@@ -74,6 +74,13 @@ class DocumentController extends BaseController
         }
 
         $this->setFileOptions(config('laravel-document-module.document.uploads'));
+        if ( ! $request->file('document') ) {
+            $this->setElfinderToOptions('document');
+        }
+        if ( $request->has('photo') && ! $request->file('photo') ) {
+            $this->setElfinderToOptions('photo.photo');
+        }
+
         $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class

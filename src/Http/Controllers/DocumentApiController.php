@@ -148,6 +148,9 @@ class DocumentApiController extends BaseController
     public function store(ApiStoreRequest $request)
     {
         $this->setFileOptions([config('laravel-document-module.document.uploads.file')]);
+        if ( ! $request->file('document') ) {
+            $this->setElfinderToOptions('document');
+        }
         $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
