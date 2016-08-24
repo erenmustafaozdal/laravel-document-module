@@ -85,9 +85,9 @@ class MigrationLaravelDocumentModule extends Migration
      */
     public function down()
     {
-        Schema::drop('documents');
-        Schema::drop('document_categories');
         Schema::drop('document_descriptions');
         Schema::drop('document_photos');
+        Schema::drop('documents');
+        Schema::drop('document_categories');
     }
 }

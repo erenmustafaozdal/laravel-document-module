@@ -61,18 +61,17 @@ class DocumentCategoryController extends BaseNodeController
      */
     public function store(StoreRequest $request, $id = null)
     {
-        if (is_null($id)) {
-            $redirect = 'index';
-        } else {
-            $redirect = 'document_category.document_category.index';
-            $this->setRelationRouteParam($id, config('laravel-document-module.url.document_category'));
-        }
-
         $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
-        return $this->storeModel(DocumentCategory::class,$redirect);
+        if (is_null($id)) {
+            $redirect = 'index';
+            return $this->storeModel(DocumentCategory::class,$redirect);
+        }
+        $redirect = 'document_category.document_category.index';
+        $this->setRelationRouteParam($id, config('laravel-document-module.url.document_category'));
+        return $this->storeNode(DocumentCategory::class,$redirect);
     }
 
     /**

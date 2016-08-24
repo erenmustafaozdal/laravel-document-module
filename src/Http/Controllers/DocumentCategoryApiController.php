@@ -131,7 +131,7 @@ class DocumentCategoryApiController extends BaseNodeController
     {
         if($request->has('id')) {
             $document_category = DocumentCategory::find($request->input('id'));
-            $models = $document_category->descendants()->where('name', 'like', "%{$request->input('query')}%");
+            $models = $document_category->descendantsAndSelf()->where('name', 'like', "%{$request->input('query')}%");
 
         } else {
             $models = DocumentCategory::where('name', 'like', "%{$request->input('query')}%");
