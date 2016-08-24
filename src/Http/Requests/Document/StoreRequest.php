@@ -35,8 +35,8 @@ class StoreRequest extends Request
             ? "required|max:{$max}|mimes:{$mimes}"
             : "required";
         $photoValidation = $this->has('photo') && $this->file('photo')
-            ? "required|max:{$max_photo}|image|mimes:{$mimes_photo}"
-            : "required";
+            ? "max:{$max_photo}|image|mimes:{$mimes_photo}"
+            : "";
         return [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255',
