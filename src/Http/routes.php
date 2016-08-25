@@ -216,13 +216,6 @@ Route::group([
             'uses'              => config('laravel-document-module.controller.document_api').'@notPublish'
         ]);
     }
-    // api update document content
-    if (config('laravel-document-module.routes.api.document_contentUpdate')) {
-        Route::post('documents/{' . config('laravel-document-module.url.document') . '}/content-update', [
-            'as'                => 'api.document.contentUpdate',
-            'uses'              => config('laravel-document-module.controller.document_api').'@contentUpdate'
-        ]);
-    }
     if (config('laravel-document-module.routes.api.document')) {
         Route::resource(config('laravel-document-module.url.document'), config('laravel-document-module.controller.document_api'), [
             'names' => [

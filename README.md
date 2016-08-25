@@ -1,5 +1,5 @@
-Laravel Page Module
-===================
+Laravel Document Module
+=======================
 [![Laravel 5.1](https://img.shields.io/badge/Laravel-5.1-orange.svg?style=flat-square)](https://laravel.com/docs/5.1/)
 [![Source](https://img.shields.io/badge/source-erenmustafaozdal/laravel--document--module-blue.svg?style=flat-square)](https://github.com/erenmustafaozdal/laravel-document-module)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://tldrlegal.com/license/mit-license)
