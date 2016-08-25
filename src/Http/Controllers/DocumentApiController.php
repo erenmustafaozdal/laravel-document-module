@@ -101,7 +101,7 @@ class DocumentApiController extends BaseController
         $document = Document::with([
             'category' => function($query)
             {
-                return $query->select(['id','name']);
+                return $query->select(['id','name','has_description','has_photo']);
             },
             'description' => function($query)
             {
