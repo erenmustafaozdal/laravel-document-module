@@ -156,6 +156,8 @@ class DocumentController extends BaseController
         if ( $request->has('photo') && ! $request->file('photo') ) {
             $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
             $this->setElfinderToOptions('photo.photo');
+        } else if ($request->file('photo')) {
+            $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
         }
         if ( $request->has('description')) {
             $this->setOperationRelation([
