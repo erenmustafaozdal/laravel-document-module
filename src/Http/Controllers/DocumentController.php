@@ -173,7 +173,7 @@ class DocumentController extends BaseController
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
-        return $this->updateModel($document,$redirect);
+        return $this->updateModel($document,$redirect, true);
     }
 
     /**
