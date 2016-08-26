@@ -74,10 +74,10 @@ class DocumentController extends BaseController
         }
 
         $this->setFileOptions(config('laravel-document-module.document.uploads'));
-        if ( ! $request->file('document') ) {
+        if ( ! $request->file('document')[0] ) {
             $this->setElfinderToOptions('document');
         }
-        if ( $request->has('photo') && ! $request->file('photo') ) {
+        if ( $request->has('photo') && ! $request->file('photo')[0] ) {
             $this->setElfinderToOptions('photo.photo');
         }
 
@@ -85,16 +85,18 @@ class DocumentController extends BaseController
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
-        $this->setOperationRelation([
-            [
-                'relation_type'     => 'hasOne',
-                'relation'          => 'description',
-                'relation_model'    => '\App\DocumentDescription',
-                'datas' => [
-                    'description'   => $request->has('description') ? $request->description : null
+        if ($request->has('description')) {
+            $this->setOperationRelation([
+                [
+                    'relation_type'     => 'hasOne',
+                    'relation'          => 'description',
+                    'relation_model'    => '\App\DocumentDescription',
+                    'datas' => [
+                        'description'   => $request->description
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        }
         return $this->storeModel(Document::class,$redirect);
     }
 
@@ -153,10 +155,10 @@ class DocumentController extends BaseController
             $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
 
-        if ( $request->has('photo') && ! $request->file('photo') ) {
+        if ( $request->has('photo') && ! $request->file('photo')[0] ) {
             $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
             $this->setElfinderToOptions('photo.photo');
-        } else if ($request->file('photo')) {
+        } else if ($request->file('photo') && ! is_null($request->file('photo')[0])) {
             $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
         }
         if ( $request->has('description')) {
