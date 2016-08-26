@@ -31,17 +31,26 @@ class StoreRequest extends Request
         $mimes = config('laravel-document-module.document.uploads.file.mimes');
         $max_photo = config('laravel-document-module.document.uploads.photo.max_size');
         $mimes_photo = config('laravel-document-module.document.uploads.photo.mimes');
-        $documentValidation = $this->has('document') && $this->file('document')
+        $documentValidation = $this->has('document') || $this->file('document')
             ? "required|max:{$max}|mimes:{$mimes}"
             : "required";
-        $photoValidation = $this->has('photo') && $this->file('photo')
+        $photoValidation = $this->has('photo') || $this->file('photo')
             ? "max:{$max_photo}|image|mimes:{$mimes_photo}"
             : "";
-        return [
+
+        $rules = [
             'category_id'       => 'required|integer',
-            'title'             => 'required|max:255',
-            'document'          => $documentValidation,
-            'photo'             => $photoValidation
+            'title'             => 'required|max:255'
         ];
+
+        for($i = 0; $i < count($this->file('photo')); $i++) {
+            $rules['photo.' . $i] = $photoValidation;
+        }
+
+        for($i = 0; $i < count($this->file('document')); $i++) {
+            $rules['document.' . $i] = $documentValidation;
+        }
+
+        return $rules;
     }
 }
