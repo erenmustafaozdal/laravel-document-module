@@ -110,7 +110,6 @@ return [
     | - relation                        : file is in the relation table and what is relation type [false|hasOne|hasMany]
     | - relation_model                  : relation model [\App\Model etc...]
     | - type                            : file type [image,file]
-    | - number_type                     : file number type [multiple,single]
     | - column                          : file database column
     | - path                            : file path
     | - max_size                        : file allowed maximum size
@@ -139,7 +138,6 @@ return [
                 'relation'              => false,
                 'relation_model'        => null,
                 'type'                  => 'file',
-                'number_type'           => 'single',
                 'column'                => 'document',
                 'path'                  => 'uploads/document',
                 'max_size'              => '5120',
@@ -150,7 +148,6 @@ return [
                 'relation'              => 'hasOne',
                 'relation_model'        => '\App\DocumentPhoto',
                 'type'                  => 'image',
-                'number_type'           => 'single',
                 'column'                => 'photo.photo',
                 'path'                  => 'uploads/document',
                 'max_size'              => '5120',
