@@ -85,7 +85,7 @@ class DocumentCategoryApiController extends BaseNodeController
 
         return [
             'id'        => $document_category->id,
-            'name'      => $document_category->name
+            'name'      => $document_category->name_uc_first
         ];
     }
 
