@@ -29,15 +29,19 @@ class ApiStoreRequest extends Request
     {
         $mimes = config('laravel-document-module.document.uploads.file.mimes');
         $max = config('laravel-document-module.document.uploads.file.max_size');
-        $documentValidation = $this->has('document') || $this->file('document') ? "required|max:{$max}|mimes:{$mimes}" : "required";
 
         $rules = [
             'category_id'       => 'required|integer',
             'title'             => 'required|max:255'
         ];
 
-        for($i = 0; $i < count($this->file('document')); $i++) {
-            $rules['document.' . $i] = $documentValidation;
+        // document elfinder mi
+        if ($this->has('document') && is_string($this->document)) {
+            return $rules['document'] = "required|max:{$max}|image|mimes:{$mimes}";
+        } else {
+            for($i = 0; $i < count($this->file('document')); $i++) {
+                $rules['document.' . $i] = "required|elfinder_max:{$max}|elfinder:{$mimes}";
+            }
         }
 
         return $rules;
