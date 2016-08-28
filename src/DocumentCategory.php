@@ -5,9 +5,12 @@ namespace ErenMustafaOzdal\LaravelDocumentModule;
 use Baum\Node;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
 class DocumentCategory extends Node
 {
+    use ModelDataTrait;
+
     /**
      * The database table used by the model.
      *
