@@ -40,6 +40,24 @@ class DocumentApiController extends BaseController
     ];
 
     /**
+     * default realtion urls of the model
+     *
+     * @var array
+     */
+    private $relationUrls = [
+        'edit_page' => [
+            'route'     => 'admin.document_category.document.edit',
+            'id'        => 0,
+            'model'     => ''
+        ],
+        'show' => [
+            'route'     => 'admin.document_category.document.show',
+            'id'        => 0,
+            'model'     => ''
+        ]
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @param Request  $request
@@ -64,18 +82,11 @@ class DocumentApiController extends BaseController
         // urls
         $addUrls = $this->urls;
         if( ! is_null($id)) {
-            $addUrls = array_merge($addUrls, [
-                'edit_page' => [
-                    'route'     => 'admin.document_category.document.edit',
-                    'id'        => $id,
-                    'model'     => config('laravel-document-module.url.document')
-                ],
-                'show' => [
-                    'route'     => 'admin.document_category.document.show',
-                    'id'        => $id,
-                    'model'     => config('laravel-document-module.url.document')
-                ]
-            ]);
+            $this->relationUrls['edit_page']['id'] = $id;
+            $this->relationUrls['edit_page']['model'] = config('laravel-document-module.url.document');
+            $this->relationUrls['show']['id'] = $id;
+            $this->relationUrls['show']['model'] = config('laravel-document-module.url.document');
+            $addUrls = array_merge($addUrls, $this->relationUrls);
         }
         $addColumns = [
             'addUrls'           => $addUrls,

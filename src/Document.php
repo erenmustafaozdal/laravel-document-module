@@ -4,6 +4,7 @@ namespace ErenMustafaOzdal\LaravelDocumentModule;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Session;
 use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
 class Document extends Model
