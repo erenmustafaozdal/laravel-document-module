@@ -25,6 +25,22 @@ use ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document\UpdateRequest;
 class DocumentController extends BaseController
 {
     /**
+     * default relation datas
+     *
+     * @var array
+     */
+    private $relations = [
+        'description' => [
+            'relation_type'     => 'hasOne',
+            'relation'          => 'description',
+            'relation_model'    => '\App\DocumentDescription',
+            'datas' => [
+                'description'   => null
+            ]
+        ]
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @param integer|null $id
@@ -73,29 +89,14 @@ class DocumentController extends BaseController
             $this->setRelationRouteParam($id, config('laravel-document-module.url.document'));
         }
 
-        $this->setFileOptions(config('laravel-document-module.document.uploads'));
-        if ( ! $request->file('document')[0] ) {
-            $this->setElfinderToOptions('document');
-        }
-        if ( $request->has('photo') && ! $request->file('photo')[0] ) {
-            $this->setElfinderToOptions('photo.photo');
-        }
-
+        $this->setToFileOptions($request, ['document' => 'file', 'photo.photo' => 'photo']);
         $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
         if ($request->has('description')) {
-            $this->setOperationRelation([
-                [
-                    'relation_type'     => 'hasOne',
-                    'relation'          => 'description',
-                    'relation_model'    => '\App\DocumentDescription',
-                    'datas' => [
-                        'description'   => $request->description
-                    ]
-                ]
-            ]);
+            $this->relations['description']['datas']['description'] = $request->description;
+            $this->setOperationRelation($this->relations);
         }
         return $this->storeModel(Document::class,$redirect);
     }
@@ -155,23 +156,11 @@ class DocumentController extends BaseController
             $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
         }
 
-        if ( $request->has('photo') && ! $request->file('photo')[0] ) {
-            $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
-            $this->setElfinderToOptions('photo.photo');
-        } else if ($request->file('photo') && ! is_null($request->file('photo')[0])) {
-            $this->setFileOptions([config('laravel-document-module.document.uploads.photo')]);
-        }
+
+        $this->setToFileOptions($request, ['photo.photo' => 'photo']);
         if ( $request->has('description')) {
-            $this->setOperationRelation([
-                [
-                    'relation_type' => 'hasOne',
-                    'relation' => 'description',
-                    'relation_model' => '\App\DocumentDescription',
-                    'datas' => [
-                        'description' => $request->has('description') ? $request->description : null
-                    ]
-                ]
-            ]);
+            $this->relations['description']['datas']['description'] = $request->description;
+            $this->setOperationRelation($this->relations);
         }
         $this->setEvents([
             'success'   => UpdateSuccess::class,

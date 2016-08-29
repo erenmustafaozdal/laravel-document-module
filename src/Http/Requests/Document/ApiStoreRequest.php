@@ -37,10 +37,10 @@ class ApiStoreRequest extends Request
 
         // document elfinder mi
         if ($this->has('document') && is_string($this->document)) {
-            return $rules['document'] = "required|max:{$max}|image|mimes:{$mimes}";
+            return $rules['document'] = "required|elfinder_max:{$max}|elfinder:{$mimes}";
         } else {
             for($i = 0; $i < count($this->file('document')); $i++) {
-                $rules['document.' . $i] = "required|elfinder_max:{$max}|elfinder:{$mimes}";
+                $rules['document.' . $i] = "required|max:{$max}|image|mimes:{$mimes}";
             }
         }
 
