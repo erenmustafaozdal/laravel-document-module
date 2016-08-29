@@ -3,7 +3,6 @@
 namespace ErenMustafaOzdal\LaravelDocumentModule;
 
 use Baum\Node;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
@@ -105,17 +104,6 @@ class DocumentCategory extends Node
     | Model Set and Get Attributes
     |--------------------------------------------------------------------------
     */
-
-    /**
-     * Get the name attribute.
-     *
-     * @param  string $name
-     * @return string
-     */
-    public function getNameAttribute($name)
-    {
-        return ucfirst_tr($name);
-    }
 
     /**
      * Set the has_description attribute.
@@ -225,47 +213,5 @@ class DocumentCategory extends Node
     public function getShowPhotoAttribute($show_photo)
     {
         return $show_photo == 1 ? true : false;
-    }
-
-    /**
-     * Get the created_at attribute.
-     *
-     * @param  $date
-     * @return string
-     */
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::parse($date)->format(config('laravel-document-module.date_format'));
-    }
-
-    /**
-     * Get the created_at attribute for humans.
-     *
-     * @return string
-     */
-    public function getCreatedAtForHumansAttribute()
-    {
-        return Carbon::parse($this->created_at)->diffForHumans();
-    }
-
-    /**
-     * Get the updated_at attribute.
-     *
-     * @param  $date
-     * @return string
-     */
-    public function getUpdatedAtAttribute($date)
-    {
-        return Carbon::parse($date)->format(config('laravel-document-module.date_format'));
-    }
-
-    /**
-     * Get the updated_at attribute for humans.
-     *
-     * @return string
-     */
-    public function getUpdatedAtForHumansAttribute()
-    {
-        return Carbon::parse($this->updated_at)->diffForHumans();
     }
 }

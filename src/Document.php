@@ -4,8 +4,8 @@ namespace ErenMustafaOzdal\LaravelDocumentModule;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Session;
 use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
+use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 
 class Document extends Model
 {
@@ -165,5 +165,34 @@ class Document extends Model
             'display'       => $this->size_for_humans,
             'number'        => $this->size
         ];
+    }
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * model boot method
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * model deleted method
+         *
+         * @param $model
+         */
+        parent::deleted(function($model)
+        {
+            $file = new FileRepository(config('laravel-document-module.document.uploads'));
+            $file->deleteDirectories($model);
+        });
     }
 }

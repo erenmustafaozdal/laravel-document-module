@@ -240,8 +240,8 @@ class DocumentController extends BaseController
             [ 'relation_type'     => 'not', 'datas' => [ 'is_publish'    => false ] ]
         ]);
         return $this->updateAlias($document, [
-            'success'   => PublishSuccess::class,
-            'fail'      => PublishFail::class
+            'success'   => NotPublishSuccess::class,
+            'fail'      => NotPublishFail::class
         ],$redirect);
     }
 }
