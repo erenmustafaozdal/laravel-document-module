@@ -71,6 +71,7 @@ class DocumentCategoryController extends BaseNodeController
         }
         $redirect = 'document_category.document_category.index';
         $this->setRelationRouteParam($id, config('laravel-document-module.url.document_category'));
+        $this->setDefineValues(['has_description','has_photo','show_title','show_description','show_photo']);
         return $this->storeNode(DocumentCategory::class,$redirect);
     }
 

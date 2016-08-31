@@ -26,49 +26,6 @@ class DocumentCategory extends Node
 
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * set nodes
-     *
-     * @param $request
-     * @param string $type => move|store
-     */
-    public function setNode(Request $request, $type = 'store')
-    {
-        if ( ! $request->has('position')) {
-            $model = DocumentCategory::find($request->input('parent'));
-            $this->makeChildOf($model);
-            return;
-        }
-
-        $input = $type === 'store' ? 'parent' : 'related';
-        switch($request->input('position')) {
-            case 'firstChild':
-                $model = DocumentCategory::find($request->input($input));
-                $this->makeFirstChildOf($model);
-                break;
-            case 'lastChild':
-                $model = DocumentCategory::find($request->input($input));
-                $this->makeChildOf($model);
-                break;
-            case 'before':
-                $model = DocumentCategory::find($request->input('related'));
-                $this->moveToLeftOf($model);
-                break;
-            case 'after':
-                $model = DocumentCategory::find($request->input('related'));
-                $this->moveToRightOf($model);
-                break;
-        }
-    }
-
-
-
 
 
     /*
