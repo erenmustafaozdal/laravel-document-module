@@ -145,6 +145,13 @@ Route::group([
             'uses'              => config('laravel-document-module.controller.document_category_api').'@move'
         ]);
     }
+    // data table detail row
+    if (config('laravel-document-module.routes.api.document_category_detail')) {
+        Route::get('document-category/{id}/detail', [
+            'as'                => 'api.document_category.detail',
+            'uses'              => config('laravel-document-module.controller.document_category_api').'@detail'
+        ]);
+    }
     // document category resource
     if (config('laravel-document-module.routes.api.document_category')) {
         Route::resource(config('laravel-document-module.url.document_category'), config('laravel-document-module.controller.document_category_api'), [
