@@ -37,8 +37,8 @@ class UpdateRequest extends Request
 
         // photo elfinder mi
         if ($this->has('photo') && is_string($this->photo)) {
-            return $rules['photo'] = "elfinder_max:{$max_photo}|elfinder:{$mimes_photo}";
-        } else  if ($this->has('photo') && is_array($this->photo)){
+            $rules['photo'] = "elfinder_max:{$max_photo}|elfinder:{$mimes_photo}";
+        } else  if (is_array($this->photo)){
             for($i = 0; $i < count($this->file('photo')); $i++) {
                 $rules['photo.' . $i] = "max:{$max_photo}|image|mimes:{$mimes_photo}";
             }

@@ -40,8 +40,8 @@ class StoreRequest extends Request
         // document elfinder mi
         if ($this->has('document') && is_string($this->document)) {
             $rules['document'] = "required|elfinder_max:{$max}|elfinder:{$mimes}";
-        } else if ($this->has('document') && is_array($this->document)){
-            for($i = 0; $i < count($this->file('document')); $i++) {
+        } else if (is_array($this->document)){
+            for($i = 0; $i < count($this->document); $i++) {
                 $rules['document.' . $i] = "required|max:{$max}|mimes:{$mimes}";
             }
         } else {
@@ -51,7 +51,7 @@ class StoreRequest extends Request
         // photo elfinder mi
         if ($this->has('photo') && is_string($this->photo)) {
             $rules['photo'] = "elfinder_max:{$max_photo}|elfinder:{$mimes_photo}";
-        } else  if ($this->has('photo') && is_array($this->photo)){
+        } else  if (is_array($this->photo)){
             for($i = 0; $i < count($this->file('photo')); $i++) {
                 $rules['photo.' . $i] = "max:{$max_photo}|image|mimes:{$mimes_photo}";
             }
