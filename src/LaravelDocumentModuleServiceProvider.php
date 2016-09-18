@@ -39,10 +39,75 @@ class LaravelDocumentModuleServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-document-module.php', 'laravel-document-module'
         );
+        // merge default configs with publish configs
+        $this->mergeDefaultConfig();
 
         $router = $this->app['router'];
         // model binding
         $router->model(config('laravel-document-module.url.document'),  'App\Document');
         $router->model(config('laravel-document-module.url.document_category'),  'App\DocumentCategory');
+    }
+
+    /**
+     * merge default configs with publish configs
+     */
+    protected function mergeDefaultConfig()
+    {
+        $config = $this->app['config']->get('laravel-document-module', []);
+        $default = require __DIR__.'/../config/default.php';
+
+        // admin document category routes
+        $route = $config['routes']['admin']['document_category'];
+        $default['routes']['admin']['document_category'] = $route;
+        // admin document routes
+        $route = $config['routes']['admin']['document'];
+        $default['routes']['admin']['document'] = $route;
+        $default['routes']['admin']['document_publish'] = $route;
+        $default['routes']['admin']['document_notPublish'] = $route;
+        // admin sub document categories nested categories
+        $route = $config['routes']['admin']['nested_sub_categories'];
+        $default['routes']['admin']['category_categories'] = $route;
+        // admin sub document categories documents
+        $route = $config['routes']['admin']['sub_category_documents'];
+        $default['routes']['admin']['category_documents'] = $route;
+        $default['routes']['admin']['category_documents_publish'] = $route;
+        $default['routes']['admin']['category_documents_notPublish'] = $route;
+
+        // api document category routes
+        $route = $config['routes']['api']['document_category'];
+        $default['routes']['api']['document_category'] = $route;
+        $default['routes']['api']['document_category_models'] = $route;
+        $default['routes']['api']['document_category_move'] = $route;
+        $default['routes']['api']['document_category_detail'] = $route;
+        // api document routes
+        $route = $config['routes']['api']['document'];
+        $default['routes']['api']['document'] = $route;
+        $default['routes']['api']['document_group'] = $route;
+        $default['routes']['api']['document_detail'] = $route;
+        $default['routes']['api']['document_fastEdit'] = $route;
+        $default['routes']['api']['document_publish'] = $route;
+        $default['routes']['api']['document_notPublish'] = $route;
+        // api sub document categories nested categories
+        $route = $config['routes']['api']['nested_sub_categories'];
+        $default['routes']['api']['category_categories_index'] = $route;
+        // api sub document categories documents
+        $route = $config['routes']['api']['sub_category_documents'];
+        $default['routes']['api']['category_documents_index'] = $route;
+
+        $config['routes'] = $default['routes'];
+
+
+        // model file uploads
+        $config['document']['uploads']['file']['relation'] = $default['document']['uploads']['file']['relation'];
+        $config['document']['uploads']['file']['relation_model'] = $default['document']['uploads']['file']['relation_model'];
+        $config['document']['uploads']['file']['type'] = $default['document']['uploads']['file']['type'];
+        $config['document']['uploads']['file']['column'] = $default['document']['uploads']['file']['column'];
+        // model photo uploads
+        $config['document']['uploads']['photo']['relation'] = $default['document']['uploads']['photo']['relation'];
+        $config['document']['uploads']['photo']['relation_model'] = $default['document']['uploads']['photo']['relation_model'];
+        $config['document']['uploads']['photo']['type'] = $default['document']['uploads']['photo']['type'];
+        $config['document']['uploads']['photo']['column'] = $default['document']['uploads']['photo']['column'];
+
+        $this->app['config']->set('laravel-document-module', $config);
     }
 }

@@ -51,28 +51,16 @@ return [
     */
     'routes' => [
         'admin' => [
-            'document_category'             => true,                // admin document category resource route
-            'document'                      => true,                // admin document resource route
-            'document_publish'              => true,                // admin document publish get route
-            'document_notPublish'           => true,                // admin document not publish get route
-            'category_categories'           => true,                // admin category nested categories resource route
-            'category_documents'            => true,                // admin category documents resource route
-            'category_documents_publish'    => true,                // admin category documents publish get route
-            'category_documents_notPublish' => true                 // admin category documents not publish get route
+            'document_category'             => true,        // Is the route to be used categories admin
+            'document'                      => true,        // Is the route to be used documents admin
+            'nested_sub_categories'         => true,        // Did subcategory nested categories admin route will be used
+            'sub_category_documents'        => true,        // Did subcategory document admin route will be used
         ],
         'api' => [
-            'document_category'             => true,                // api document category resource route
-            'document_category_models'      => true,                // api document category model post route
-            'document_category_move'        => true,                // api document category move post route
-            'document_category_detail'      => true,                // api document category detail post route
-            'document'                      => true,                // api document resource route
-            'document_group'                => true,                // api document group post route
-            'document_detail'               => true,                // api document detail get route
-            'document_fastEdit'             => true,                // api document fast edit post route
-            'document_publish'              => true,                // api document publish get route
-            'document_notPublish'           => true,                // api document not publish get route
-            'category_categories_index'     => true,                // api category nested categories index get route
-            'category_documents_index'      => true,                // api category documents index get route
+            'document_category'             => true,        // Is the route to be used categories api
+            'document'                      => true,        // Is the route to be used documents api
+            'nested_sub_categories'         => true,        // Did subcategory nested categories api route will be used
+            'sub_category_documents'        => true,        // Did subcategory document api route will be used
         ]
     ],
 
@@ -111,10 +99,6 @@ return [
     | - default_img_path                : model default avatar or photo
     |
     | --- uploads                       : model uploads options
-    | - relation                        : file is in the relation table and what is relation type [false|hasOne|hasMany]
-    | - relation_model                  : relation model [\App\Model etc...]
-    | - type                            : file type [image,file]
-    | - column                          : file database column
     | - path                            : file path
     | - max_size                        : file allowed maximum size
     | - aspect_ratio                    : if file is image; crop aspect ratio
@@ -139,20 +123,12 @@ return [
         'uploads' => [
             // document options
             'file' => [
-                'relation'              => false,
-                'relation_model'        => null,
-                'type'                  => 'file',
-                'column'                => 'document',
                 'path'                  => 'uploads/document',
                 'max_size'              => '5120',
                 'mimes'                 => 'conf,css,csv,def,doc,docm,docx,dot,dotm,gif,htm,html,in,jpe,jpeg,jpg,json,list,log,mpp,mpt,odb,odc,odf,odft,odg,odi,odm,odp,ods,odt,otc,otg,oth,oti,otp,ots,ott,pdf,png,pot,potm,ppam,pps,ppsm,ppt,pptm,psd,sldm,text,thmx,txt,xla,xlam,xlc,xlm,xls,xlsb,xlsm,xlsx,xlt,xltm,xlw,xml,xsl'
             ],
             // document photo options
             'photo' => [
-                'relation'              => 'hasOne',
-                'relation_model'        => '\App\DocumentPhoto',
-                'type'                  => 'image',
-                'column'                => 'photo.photo',
                 'path'                  => 'uploads/document',
                 'max_size'              => '5120',
                 'aspect_ratio'          => 16/9,
