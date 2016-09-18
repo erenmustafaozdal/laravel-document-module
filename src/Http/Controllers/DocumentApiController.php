@@ -94,7 +94,9 @@ class DocumentApiController extends BaseController
         ];
         $editColumns = [
             'created_at'        => function($model) { return $model->created_at_table; },
-            'size'              => function($model) { return $model->size_table; }
+            'size'              => function($model) { return $model->size_table; },
+            'title'              => function($model) { return $model->title_uc_first; },
+            'category.name'   => function($model) { return $model->category->name_uc_first; },
         ];
         $removeColumns = ['is_publish','category_id'];
         return $this->getDatatables($documents, $addColumns, $editColumns, $removeColumns);
@@ -126,9 +128,11 @@ class DocumentApiController extends BaseController
 
         $editColumns = [
             'size'          => function($model) { return $model->size_table; },
+            'title'         => function($model) { return $model->title_uc_first; },
             'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; },
             'photo.photo'   => function($model) { return !is_null($model->photo) ? $model->photo->getPhoto([], 'big', true, 'document','document_id') : ''; },
+            'category.name'   => function($model) { return $model->category->name_uc_first; },
         ];
         return $this->getDatatables($document, [], $editColumns, []);
     }
