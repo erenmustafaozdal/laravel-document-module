@@ -74,25 +74,28 @@ class LaravelDocumentModuleServiceProvider extends ServiceProvider
         $default['routes']['admin']['category_documents_notPublish'] = $route;
 
         // api document category routes
-        $route = $config['routes']['api']['document_category'];
-        $default['routes']['api']['document_category'] = $route;
-        $default['routes']['api']['document_category_models'] = $route;
-        $default['routes']['api']['document_category_move'] = $route;
-        $default['routes']['api']['document_category_detail'] = $route;
-        // api document routes
-        $route = $config['routes']['api']['document'];
-        $default['routes']['api']['document'] = $route;
-        $default['routes']['api']['document_group'] = $route;
-        $default['routes']['api']['document_detail'] = $route;
-        $default['routes']['api']['document_fastEdit'] = $route;
-        $default['routes']['api']['document_publish'] = $route;
-        $default['routes']['api']['document_notPublish'] = $route;
+        $apiCat = $config['routes']['api']['document_category'];
+        $default['routes']['api']['document_category'] = $apiCat;
         // api sub document categories nested categories
-        $route = $config['routes']['api']['nested_sub_categories'];
-        $default['routes']['api']['category_categories_index'] = $route;
+        $apiSubCat = $config['routes']['api']['nested_sub_categories'];
+        $default['routes']['api']['category_categories_index'] = $apiSubCat;
+
+        $default['routes']['api']['document_category_models'] = $apiCat || $apiSubCat;
+        $default['routes']['api']['document_category_move'] = $apiCat || $apiSubCat;
+        $default['routes']['api']['document_category_detail'] = $apiCat || $apiSubCat;
+
+        // api document routes
+        $apiModel = $config['routes']['api']['document'];
+        $default['routes']['api']['document'] = $apiModel;
         // api sub document categories documents
-        $route = $config['routes']['api']['sub_category_documents'];
-        $default['routes']['api']['category_documents_index'] = $route;
+        $apiSubModel = $config['routes']['api']['sub_category_documents'];
+        $default['routes']['api']['category_documents_index'] = $apiSubModel;
+
+        $default['routes']['api']['document_group'] = $apiModel || $apiSubModel;
+        $default['routes']['api']['document_detail'] = $apiModel || $apiSubModel;
+        $default['routes']['api']['document_fastEdit'] = $apiModel || $apiSubModel;
+        $default['routes']['api']['document_publish'] = $apiModel || $apiSubModel;
+        $default['routes']['api']['document_notPublish'] = $apiModel || $apiSubModel;
 
         $config['routes'] = $default['routes'];
 
