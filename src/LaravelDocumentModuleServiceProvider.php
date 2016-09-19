@@ -100,16 +100,18 @@ class LaravelDocumentModuleServiceProvider extends ServiceProvider
         $config['routes'] = $default['routes'];
 
 
-        // model file uploads
-        $config['document']['uploads']['file']['relation'] = $default['document']['uploads']['file']['relation'];
-        $config['document']['uploads']['file']['relation_model'] = $default['document']['uploads']['file']['relation_model'];
-        $config['document']['uploads']['file']['type'] = $default['document']['uploads']['file']['type'];
-        $config['document']['uploads']['file']['column'] = $default['document']['uploads']['file']['column'];
-        // model photo uploads
-        $config['document']['uploads']['photo']['relation'] = $default['document']['uploads']['photo']['relation'];
-        $config['document']['uploads']['photo']['relation_model'] = $default['document']['uploads']['photo']['relation_model'];
-        $config['document']['uploads']['photo']['type'] = $default['document']['uploads']['photo']['type'];
-        $config['document']['uploads']['photo']['column'] = $default['document']['uploads']['photo']['column'];
+        $path = unsetReturn($config['document']['uploads'],'path');
+        $default['document']['uploads']['file']['path'] = $path;
+        $default['document']['uploads']['photo']['path'] = $path;
+        $max_size = unsetReturn($config['document']['uploads'],'max_size');
+        $default['document']['uploads']['file']['max_size'] = $max_size;
+        $default['document']['uploads']['photo']['max_size'] = $max_size;
+        $default['document']['uploads']['file']['mimes'] = unsetReturn($config['document']['uploads'],'file_mimes');
+        $default['document']['uploads']['photo']['aspect_ratio'] = unsetReturn($config['document']['uploads'],'photo_aspect_ratio');
+        $default['document']['uploads']['photo']['mimes'] = unsetReturn($config['document']['uploads'],'photo_mimes');
+        $default['document']['uploads']['photo']['thumbnails'] = unsetReturn($config['document']['uploads'],'photo_thumbnails');
+        $config['document']['uploads']['file'] = $default['document']['uploads']['file'];
+        $config['document']['uploads']['photo'] = $default['document']['uploads']['photo'];
 
         $this->app['config']->set('laravel-document-module', $config);
     }

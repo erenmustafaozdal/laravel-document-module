@@ -121,23 +121,15 @@ return [
     'document' => [
         'default_img_path'              => 'vendor/laravel-modules-core/assets/global/img/document',
         'uploads' => [
-            // document options
-            'file' => [
-                'path'                  => 'uploads/document',
-                'max_size'              => '5120',
-                'mimes'                 => 'conf,css,csv,def,doc,docm,docx,dot,dotm,gif,htm,html,in,jpe,jpeg,jpg,json,list,log,mpp,mpt,odb,odc,odf,odft,odg,odi,odm,odp,ods,odt,otc,otg,oth,oti,otp,ots,ott,pdf,png,pot,potm,ppam,pps,ppsm,ppt,pptm,psd,sldm,text,thmx,txt,xla,xlam,xlc,xlm,xls,xlsb,xlsm,xlsx,xlt,xltm,xlw,xml,xsl'
-            ],
-            // document photo options
-            'photo' => [
-                'path'                  => 'uploads/document',
-                'max_size'              => '5120',
-                'aspect_ratio'          => 16/9,
-                'mimes'                 => 'jpeg,jpg,jpe,png',
-                'thumbnails' => [
-                    'small'             => [ 'width' => 35, 'height' => 35],
-                    'normal'            => [ 'width' => 300, 'height' => 300],
-                    'big'               => [ 'width' => 800, 'height' => 800],
-                ]
+            'path'                  => 'uploads/document',
+            'max_size'              => '5120',
+            'file_mimes'            => 'conf,css,csv,def,doc,docm,docx,dot,dotm,gif,htm,html,in,jpe,jpeg,jpg,json,list,log,mpp,mpt,odb,odc,odf,odft,odg,odi,odm,odp,ods,odt,otc,otg,oth,oti,otp,ots,ott,pdf,png,pot,potm,ppam,pps,ppsm,ppt,pptm,psd,sldm,text,thmx,txt,xla,xlam,xlc,xlm,xls,xlsb,xlsm,xlsx,xlt,xltm,xlw,xml,xsl',
+            'photo_aspect_ratio'    => 16/9,
+            'photo_mimes'           => 'jpeg,jpg,jpe,png',
+            'photo_thumbnails' => [
+                'small'             => [ 'width' => 35, 'height' => 35],
+                'normal'            => [ 'width' => 300, 'height' => 300],
+                'big'               => [ 'width' => 800, 'height' => 800],
             ]
         ]
     ],
