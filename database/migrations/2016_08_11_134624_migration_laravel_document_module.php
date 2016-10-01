@@ -28,8 +28,8 @@ class MigrationLaravelDocumentModule extends Migration
                 $table->boolean('datatable_detail')->default(1);
                 $table->boolean('description_is_editor')->default(0);
                 $table->boolean('config_propagation')->default(0); // ayarlar alt kategorilere yayılsın mı
-                $table->integer('photo_width')->nullable(); // photo width for aspect ratio
-                $table->integer('photo_height')->nullable(); // photo height for aspect ratio
+                $table->integer('photo_width')->default(0); // photo width for aspect ratio
+                $table->integer('photo_height')->default(0); // photo height for aspect ratio
 
                 // kategoriye bağlı olarak modelde açıklama ve fotoğraf olacak mı?
                 $table->boolean('has_description')->default(0);
@@ -63,23 +63,11 @@ class MigrationLaravelDocumentModule extends Migration
         if ( ! Schema::hasTable('document_category_columns')) {
             Schema::create('document_category_columns', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('document_id')->unsigned();
-                $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
+                $table->integer('category_id')->unsigned();
+                $table->foreign('category_id')->references('id')->on('document_categories')->onDelete('cascade');
 
                 $table->string('name');
                 $table->string('type')->default('text');
-
-                $table->engine = 'InnoDB';
-            });
-        }
-
-        if ( ! Schema::hasTable('document_category_column_values')) {
-            Schema::create('document_category_column_values', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('column_id')->unsigned();
-                $table->foreign('column_id')->references('id')->on('document_category_column_values')->onDelete('cascade');
-
-                $table->string('value');
 
                 $table->engine = 'InnoDB';
             });
@@ -97,6 +85,20 @@ class MigrationLaravelDocumentModule extends Migration
                 $table->unsignedInteger('size');
                 $table->boolean('is_publish')->default(0);
                 $table->timestamps();
+
+                $table->engine = 'InnoDB';
+            });
+        }
+
+        if ( ! Schema::hasTable('document_document_category_column')) {
+            Schema::create('document_document_category_column', function (Blueprint $table) {
+                $table->integer('column_id')->unsigned()->index();
+                $table->foreign('column_id')->references('id')->on('document_category_columns')->onDelete('cascade');
+
+                $table->integer('document_id')->unsigned()->index();
+                $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
+
+                $table->string('value');
 
                 $table->engine = 'InnoDB';
             });
@@ -137,7 +139,7 @@ class MigrationLaravelDocumentModule extends Migration
         Schema::drop('document_descriptions');
         Schema::drop('document_photos');
         Schema::drop('documents');
-        Schema::drop('document_category_column_values');
+        Schema::drop('document_document_category_column');
         Schema::drop('document_category_columns');
         Schema::drop('document_category_thumbnails');
         Schema::drop('document_categories');

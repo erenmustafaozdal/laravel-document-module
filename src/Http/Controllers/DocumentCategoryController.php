@@ -65,13 +65,13 @@ class DocumentCategoryController extends BaseNodeController
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
+        $this->setRelation($request);
         if (is_null($id)) {
             $redirect = 'index';
             return $this->storeModel(DocumentCategory::class,$redirect);
         }
         $redirect = 'document_category.document_category.index';
         $this->setRelationRouteParam($id, config('laravel-document-module.url.document_category'));
-        $this->setDefineValues(['has_description','has_photo','show_title','show_description','show_photo']);
         return $this->storeNode(DocumentCategory::class,$redirect);
     }
 
@@ -134,6 +134,7 @@ class DocumentCategoryController extends BaseNodeController
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
+        $this->setRelation($request);
         return $this->updateModel($document_category, $redirect);
     }
 

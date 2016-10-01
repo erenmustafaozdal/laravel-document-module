@@ -87,6 +87,8 @@ class DocumentController extends BaseController
         } else {
             $redirect = 'document_category.document.index';
             $this->setRelationRouteParam($id, config('laravel-document-module.url.document'));
+            // options change with category
+            $this->changeOptions(DocumentCategory::findOrFail($id));
         }
 
         $this->setToFileOptions($request, ['document' => 'file', 'photo.photo' => 'photo']);
@@ -154,6 +156,8 @@ class DocumentController extends BaseController
         } else {
             $redirect = 'document_category.document.show';
             $this->setRelationRouteParam($firstId, config('laravel-document-module.url.document'));
+            // options change with category
+            $this->changeOptions(DocumentCategory::findOrFail($firstId));
         }
 
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
+use Illuminate\Support\Facades\Request;
 
 class Document extends Model
 {
@@ -123,6 +124,17 @@ class Document extends Model
         return $this->hasOne('App\DocumentPhoto','document_id');
     }
 
+    /**
+     * Get the extra columns of the document.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function extras()
+    {
+        return $this->belongsToMany('App\DocumentExtra','document_document_category_column','document_id','column_id')
+            ->withPivot('value');
+    }
+
 
 
 
@@ -183,6 +195,19 @@ class Document extends Model
     protected static function boot()
     {
         parent::boot();
+
+        /**
+         * model saved method
+         *
+         * @param $model
+         */
+        parent::saved(function($model)
+        {
+            // extra value add
+            if (Request::has('extras')) {
+                $model->extras()->sync( Request::get('extras') );
+            }
+        });
 
         /**
          * model deleted method

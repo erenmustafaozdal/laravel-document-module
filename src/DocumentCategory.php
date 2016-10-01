@@ -22,7 +22,23 @@ class DocumentCategory extends Node
      *
      * @var array
      */
-    protected $fillable = ['name','has_description','has_photo','show_title','show_description','show_photo'];
+    protected $fillable = [
+        'name',
+        'has_description',
+        'has_photo',
+        'show_title',
+        'show_description',
+        'show_photo',
+        'datatable_filter',
+        'datatable_tools',
+        'datatable_fast_add',
+        'datatable_group_action',
+        'datatable_detail',
+        'description_is_editor',
+        'config_propagation',
+        'photo_width',
+        'photo_height',
+    ];
 
 
 
@@ -50,6 +66,22 @@ class DocumentCategory extends Node
     public function documents()
     {
         return $this->hasMany('App\Document','category_id');
+    }
+
+    /**
+     * Get the thumbnails of the document category.
+     */
+    public function thumbnails()
+    {
+        return $this->hasMany('App\DocumentThumbnail','category_id');
+    }
+
+    /**
+     * Get the extras of the document category.
+     */
+    public function extras()
+    {
+        return $this->hasMany('App\DocumentExtra','category_id');
     }
 
 

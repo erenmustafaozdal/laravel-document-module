@@ -28,6 +28,26 @@ use LMBCollection;
 class DocumentCategoryApiController extends BaseNodeController
 {
     /**
+     * default relation datas
+     *
+     * @var array
+     */
+    private $relations = [
+        'thumbnails' => [
+            'relation_type'     => 'hasMany',
+            'relation'          => 'thumbnails',
+            'relation_model'    => '\App\DocumentThumbnail',
+            'datas'             => null
+        ],
+        'extras' => [
+            'relation_type'     => 'hasMany',
+            'relation'          => 'extras',
+            'relation_model'    => '\App\DocumentExtra',
+            'datas'             => null
+        ]
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @param  Request  $request
@@ -61,11 +81,14 @@ class DocumentCategoryApiController extends BaseNodeController
      */
     public function store(ApiStoreRequest $request)
     {
-        $this->setDefineValues(['has_description','has_photo','show_title','show_description','show_photo']);
         $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
+        $document_category = DocumentCategory::find($request->parent);
+        if ($document_category->config_propagation) {
+            $this->setRelationDefine($document_category);
+        }
         return $this->storeNode(DocumentCategory::class);
     }
 
@@ -100,11 +123,14 @@ class DocumentCategoryApiController extends BaseNodeController
     public function move(ApiMoveRequest $request, $id)
     {
         $document_category = DocumentCategory::findOrFail($id);
-        $this->setDefineValues(['has_description','has_photo','show_title','show_description','show_photo']);
         $this->setEvents([
             'success'   => MoveSuccess::class,
             'fail'      => MoveFail::class
         ]);
+        $parent = DocumentCategory::find($request->related);
+        if ($parent->config_propagation) {
+            $this->setRelationDefine($parent);
+        }
         return $this->moveModel($document_category);
     }
 
