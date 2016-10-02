@@ -110,7 +110,7 @@ class MigrationLaravelDocumentModule extends Migration
                 $table->integer('document_id')->unsigned();
                 $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
 
-                $table->string('description');
+                $table->longText('description');
 
                 $table->engine = 'InnoDB';
             });
@@ -138,10 +138,10 @@ class MigrationLaravelDocumentModule extends Migration
     {
         Schema::drop('document_descriptions');
         Schema::drop('document_photos');
-        Schema::drop('documents');
         Schema::drop('document_document_category_column');
         Schema::drop('document_category_columns');
         Schema::drop('document_category_thumbnails');
+        Schema::drop('documents');
         Schema::drop('document_categories');
     }
 }
