@@ -70,7 +70,8 @@ class DocumentApiController extends BaseController
         if (is_null($id)) {
             $documents = Document::with('category');
         } else {
-            $documents = DocumentCategory::findOrFail($id)->documents();
+            $categories = DocumentCategory::findOrFail($id)->getDescendantsAndSelf()->keyBy('id')->keys();
+            $documents = Document::whereIn('category_id',$categories);
         }
         $documents->select(['id','category_id','title','document','size','is_publish','created_at']);
 
