@@ -68,9 +68,11 @@ class DocumentCategoryApiController extends BaseNodeController
      */
     public function detail($id, Request $request)
     {
-        return DocumentCategory::where('id', $id)
-            ->select('has_description','has_photo')
-            ->first();
+        $category = DocumentCategory::find($id);
+        if ($category->isRoot()) {
+            return $category;
+        }
+        return $category->getRoot();
     }
 
     /**
