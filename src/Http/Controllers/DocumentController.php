@@ -248,4 +248,17 @@ class DocumentController extends BaseController
             'fail'      => NotPublishFail::class
         ],$redirect);
     }
+
+    /**
+     * download the document.
+     *
+     * @param Document $document
+     * @return \Illuminate\Http\Response
+     */
+    public function download($document)
+    {
+        $path = config('laravel-document-module.document.uploads.file.path');
+        $file = public_path("{$path}/{$document->id}/{$document->document}");
+        return response()->download($file);
+    }
 }

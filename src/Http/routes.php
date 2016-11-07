@@ -235,3 +235,15 @@ Route::group([
         ]);
     }
 });
+
+
+// download document
+Route::group([
+    'prefix'        => 'download',
+    'namespace'     => config('laravel-document-module.controller.document_admin_namespace')
+], function() {
+    Route::get('document/{' . config('laravel-document-module.url.document') . '}', [
+        'as' => 'download.document',
+        'uses' => config('laravel-document-module.controller.document') . '@download'
+    ]);
+});

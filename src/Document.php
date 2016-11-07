@@ -90,6 +90,31 @@ class Document extends Model
         return $query;
     }
 
+    /**
+     * get detail data with all of the relation
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGetDetail($query)
+    {
+        return $query->with([
+            'category' => function($query)
+            {
+                return $query->select(['id','parent_id','lft','rgt','depth','name']);
+            },
+            'description' => function($query)
+            {
+                return $query->select(['id','document_id','description']);
+            },
+            'photo' => function($query)
+            {
+                return $query->select(['id','document_id','photo']);
+            },
+            'extras'
+        ]);
+    }
+
 
 
 
