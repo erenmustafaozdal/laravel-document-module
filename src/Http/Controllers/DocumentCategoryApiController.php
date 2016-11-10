@@ -28,6 +28,28 @@ use LMBCollection;
 class DocumentCategoryApiController extends BaseNodeController
 {
     /**
+     * define values
+     *
+     * @var array
+     */
+    private $defineValues = [
+        'has_description',
+        'has_photo',
+        'show_title',
+        'show_description',
+        'show_photo',
+        'datatable_filter',
+        'datatable_tools',
+        'datatable_fast_add',
+        'datatable_group_action',
+        'datatable_detail',
+        'description_is_editor',
+        'config_propagation',
+        'photo_width',
+        'photo_height',
+    ];
+
+    /**
      * default relation datas
      *
      * @var array
@@ -87,7 +109,12 @@ class DocumentCategoryApiController extends BaseNodeController
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
-        $document_category = DocumentCategory::find($request->parent);
+        if ($request->parent != 0) {
+            $document_category = DocumentCategory::find($request->parent);
+        } else {
+            $document_category = DocumentCategory::find($request->related);
+            $document_category = $document_category->isRoot() ? $document_category : $document_category->getRoot();
+        }
         if ($document_category->config_propagation) {
             $this->setRelationDefine($document_category);
         }
@@ -130,6 +157,7 @@ class DocumentCategoryApiController extends BaseNodeController
             'fail'      => MoveFail::class
         ]);
         $parent = DocumentCategory::find($request->related);
+        $parent = $parent->isRoot() ? $parent : $parent->getRoot();
         if ($parent->config_propagation) {
             $this->setRelationDefine($parent);
         }
@@ -161,7 +189,7 @@ class DocumentCategoryApiController extends BaseNodeController
     {
         if($request->has('id')) {
             $document_category = DocumentCategory::find($request->input('id'));
-            $models = $document_category->descendantsAndSelf()->where('name', 'like', "%{$request->input('query')}%");
+            $models = $document_category->descendants()->where('name', 'like', "%{$request->input('query')}%");
 
         } else {
             $models = DocumentCategory::where('name', 'like', "%{$request->input('query')}%");
