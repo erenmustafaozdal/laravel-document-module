@@ -133,4 +133,83 @@ return [
             ]
         ]
     ],
+
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions
+    |--------------------------------------------------------------------------
+    */
+    'permissions' => [
+        'document_category' => [
+            'title'                 => 'Belge Kategorileri',
+            'routes' => [
+                'admin.document_category.index' => [
+                    'title'         => 'Veri Tablosu',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda listeleyebilir.',
+                ],
+                'admin.document_category.create' => [
+                    'title'         => 'Ekleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisi ekleyebilir',
+                ],
+                'admin.document_category.show' => [
+                    'title'         => 'Gösterme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisi bilgilerini görüntüleyebilir',
+                ],
+                'admin.document_category.edit' => [
+                    'title'         => 'Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisini düzenleyebilir',
+                ],
+                'admin.document_category.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisini silebilir',
+                ],
+                'api.document_category.models' => [
+                    'title'         => 'Rolleri Listeleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini bazı seçim kutularında listeleyebilir',
+                ],
+                'api.document_category.move' => [
+                    'title'         => 'Taşıma',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini taşıyarak yerini değiştirebilir.',
+                ],
+            ],
+        ],
+        'document' => [
+            'title'                 => 'Belgeler',
+            'routes' => [
+                'admin.document.index' => [
+                    'title'         => 'Veri Tablosu',
+                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda listeleyebilir.',
+                ],
+                'admin.document.create' => [
+                    'title'         => 'Ekleme',
+                    'description'   => 'Bu izne sahip olanlar belge ekleyebilir',
+                ],
+                'admin.document.show' => [
+                    'title'         => 'Gösterme',
+                    'description'   => 'Bu izne sahip olanlar belge bilgilerini görüntüleyebilir',
+                ],
+                'admin.document.edit' => [
+                    'title'         => 'Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar belge bilgilerini düzenleyebilir',
+                ],
+                'admin.document.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar belgeyi silebilir',
+                ],
+                'api.document.group' => [
+                    'title'         => 'Toplu İşlem',
+                    'description'   => 'Bu izne sahip olanlar belgeler veri tablosunda toplu işlem yapabilir',
+                ],
+                'api.document.detail' => [
+                    'title'         => 'Detaylar',
+                    'description'   => 'Bu izne sahip olanlar belgeler tablosunda detayını görebilir.',
+                ]
+            ],
+        ]
+    ],
 ];
