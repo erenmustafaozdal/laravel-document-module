@@ -150,9 +150,13 @@ return [
             'routes' => [
                 'admin.document_category.index' => [
                     'title'         => 'Veri Tablosu',
-                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda listeleyebilir.',
+                    'description'   => 'Bu izne sahip olanlar belge kategorileri veri tablosu sayfasına gidebilir.',
                 ],
                 'admin.document_category.create' => [
+                    'title'         => 'Ekleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisi ekleme sayfasına gidebilir',
+                ],
+                'admin.document_category.store' => [
                     'title'         => 'Ekleme',
                     'description'   => 'Bu izne sahip olanlar belge kategorisi ekleyebilir',
                 ],
@@ -161,6 +165,10 @@ return [
                     'description'   => 'Bu izne sahip olanlar belge kategorisi bilgilerini görüntüleyebilir',
                 ],
                 'admin.document_category.edit' => [
+                    'title'         => 'Düzenleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar belge kategorisini düzenleme sayfasına gidebilir',
+                ],
+                'admin.document_category.update' => [
                     'title'         => 'Düzenleme',
                     'description'   => 'Bu izne sahip olanlar belge kategorisini düzenleyebilir',
                 ],
@@ -168,13 +176,33 @@ return [
                     'title'         => 'Silme',
                     'description'   => 'Bu izne sahip olanlar belge kategorisini silebilir',
                 ],
+                'api.document_category.index' => [
+                    'title'         => 'Listeleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda listeleyebilir',
+                ],
+                'api.document_category.store' => [
+                    'title'         => 'Hızlı Ekleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda hızlı ekleyebilir.',
+                ],
+                'api.document_category.update' => [
+                    'title'         => 'Hızlı Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda hızlı düzenleyebilir.',
+                ],
+                'api.document_category.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerini veri tablosunda silebilir',
+                ],
                 'api.document_category.models' => [
-                    'title'         => 'Rolleri Listeleme',
+                    'title'         => 'Seçim İçin Listeleme',
                     'description'   => 'Bu izne sahip olanlar belge kategorilerini bazı seçim kutularında listeleyebilir',
                 ],
                 'api.document_category.move' => [
                     'title'         => 'Taşıma',
                     'description'   => 'Bu izne sahip olanlar belge kategorilerini taşıyarak yerini değiştirebilir.',
+                ],
+                'api.document_category.detail' => [
+                    'title'         => 'Detaylar',
+                    'description'   => 'Bu izne sahip olanlar belge kategorilerinin detay bilgilerini getirebilir.',
                 ],
             ],
         ],
@@ -183,9 +211,13 @@ return [
             'routes' => [
                 'admin.document.index' => [
                     'title'         => 'Veri Tablosu',
-                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda listeleyebilir.',
+                    'description'   => 'Bu izne sahip olanlar belgeler veri tablosu sayfasına gidebilir.',
                 ],
                 'admin.document.create' => [
+                    'title'         => 'Ekleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar belge ekleme sayfasına gidebilir',
+                ],
+                'admin.document.store' => [
                     'title'         => 'Ekleme',
                     'description'   => 'Bu izne sahip olanlar belge ekleyebilir',
                 ],
@@ -194,12 +226,40 @@ return [
                     'description'   => 'Bu izne sahip olanlar belge bilgilerini görüntüleyebilir',
                 ],
                 'admin.document.edit' => [
+                    'title'         => 'Düzenleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar belgeyi düzenleme sayfasına gidebilir',
+                ],
+                'admin.document.update' => [
                     'title'         => 'Düzenleme',
-                    'description'   => 'Bu izne sahip olanlar belge bilgilerini düzenleyebilir',
+                    'description'   => 'Bu izne sahip olanlar belgeyi düzenleyebilir',
                 ],
                 'admin.document.destroy' => [
                     'title'         => 'Silme',
                     'description'   => 'Bu izne sahip olanlar belgeyi silebilir',
+                ],
+                'admin.document.publish' => [
+                    'title'         => 'Yayınlama',
+                    'description'   => 'Bu izne sahip olanlar belgeyi yayınlayabilir',
+                ],
+                'admin.document.notPublish' => [
+                    'title'         => 'Yayından Kaldırma',
+                    'description'   => 'Bu izne sahip olanlar belgeyi yayından kaldırabilir',
+                ],
+                'api.document.index' => [
+                    'title'         => 'Listeleme',
+                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda listeleyebilir',
+                ],
+                'api.document.store' => [
+                    'title'         => 'Hızlı Ekleme',
+                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda hızlı ekleyebilir.',
+                ],
+                'api.document.update' => [
+                    'title'         => 'Hızlı Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda hızlı düzenleyebilir.',
+                ],
+                'api.document.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar belgeleri veri tablosunda silebilir',
                 ],
                 'api.document.group' => [
                     'title'         => 'Toplu İşlem',
@@ -208,8 +268,20 @@ return [
                 'api.document.detail' => [
                     'title'         => 'Detaylar',
                     'description'   => 'Bu izne sahip olanlar belgeler tablosunda detayını görebilir.',
-                ]
+                ],
+                'api.document.fastEdit' => [
+                    'title'         => 'Hızlı Düzenleme Bilgileri',
+                    'description'   => 'Bu izne sahip olanlar belgeler tablosunda hızlı düzenleme amacıyla bilgileri getirebilir.',
+                ],
+                'api.document.publish' => [
+                    'title'         => 'Hızlı Yayınlama',
+                    'description'   => 'Bu izne sahip olanlar belgeler tablosunda belgeyi yayınlanyabilir.',
+                ],
+                'api.document.notPublish' => [
+                    'title'         => 'Hızlı Yayından Kaldırma',
+                    'description'   => 'Bu izne sahip olanlar belgeler tablosunda belgeyi yayından kaldırabilir.',
+                ],
             ],
-        ]
+        ],
     ],
 ];
