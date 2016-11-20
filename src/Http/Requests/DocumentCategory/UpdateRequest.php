@@ -16,7 +16,7 @@ class UpdateRequest extends Request
     {
         $hackedRoute = 'admin.document_category.update';
         if ( ! is_null($this->segment(4))) {
-            $hackedRoute .= '#####' .$this->segment(3);
+            $hackedRoute = 'admin.document_category.document_category.update#####' .$this->segment(3);
         }
         return hasPermission($hackedRoute);
     }
