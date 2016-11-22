@@ -62,4 +62,41 @@ class StoreRequest extends Request
 
         return $rules;
     }
+
+    /**
+     * get message of the rules
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        $messages = [];
+
+        // photo message eklenir
+        if ( ( $this->has('photo') || $this->file('photo') ) && is_array($this->photo)) {
+            foreach ($this->photo as $key => $val) {
+                $item = $key + 1;
+                $messages['photo.' . $key . '.required'] = "{$item}. Fotoğraf alanı gereklidir.";
+                $messages['photo.' . $key . '.elfinder_max'] = "{$item}. Fotoğraf alanı en fazla :size bayt boyutunda olmalıdır.";
+                $messages['photo.' . $key . '.elfinder'] = "{$item}. Fotoğraf dosya biçimi :values olmalıdır.";
+                $messages['photo.' . $key . '.max'] = "{$item}. Fotoğraf değeri :max kilobayt değerinden küçük olmalıdır.";
+                $messages['photo.' . $key . '.image'] = "{$item}. Fotoğraf alanı resim dosyası olmalıdır.";
+                $messages['photo.' . $key . '.mimes'] = "{$item}. Fotoğraf dosya biçimi :values olmalıdır.";
+            }
+        }
+
+        // document message eklenir
+        if ( $this->file('document') && is_array($this->document)) {
+            foreach ($this->document as $key => $val) {
+                $item = $key + 1;
+                $messages['document.' . $key . '.required'] = "{$item}. Dosya alanı gereklidir.";
+                $messages['document.' . $key . '.elfinder_max'] = "{$item}. Dosya alanı en fazla :size bayt boyutunda olmalıdır.";
+                $messages['document.' . $key . '.elfinder'] = "{$item}. Dosya dosya biçimi :values olmalıdır.";
+                $messages['document.' . $key . '.max'] = "{$item}. Dosya değeri :max kilobayt değerinden küçük olmalıdır.";
+                $messages['document.' . $key . '.mimes'] = "{$item}. Dosya dosya biçimi :values olmalıdır.";
+            }
+        }
+
+        return $messages;
+    }
 }
