@@ -2,10 +2,10 @@
 
 namespace ErenMustafaOzdal\LaravelDocumentModule\Http\Requests\Document;
 
-use App\Http\Requests\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Requests\BaseRequest;
 use Sentinel;
 
-class StoreRequest extends Request
+class StoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
