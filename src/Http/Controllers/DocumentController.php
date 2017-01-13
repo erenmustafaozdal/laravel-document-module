@@ -260,7 +260,7 @@ class DocumentController extends BaseController
         $path = config('laravel-document-module.document.uploads.file.path');
         $file = public_path("{$path}/{$document->id}/{$document->document}");
         return response(file_get_contents($file), 200, [
-            'Content-Type' => 'application/pdf',
+            'Content-Type' => \File::mimeType($file),
             'Content-Disposition' => 'inline; filename="'.$document->document.'"'
         ]);
     }
