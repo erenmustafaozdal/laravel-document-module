@@ -203,4 +203,91 @@ class DocumentCategory extends Node
     {
         return $show_photo == 1 ? true : false;
     }
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * model boot method
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * model saved method
+         *
+         * @param $model
+         */
+        parent::saved(function($model)
+        {
+            // cache forget
+            $category_id = $model->isRoot() ? $model->id : $model->getRoot()->id;
+            $categories = \DB::table('product_categories')->select('product_categories.id')
+                ->where('product_categories.id', $category_id)
+                ->join('product_categories as cat', function ($join) {
+                    $join->on('cat.lft', '>=', 'product_categories.lft')
+                        ->on('cat.lft', '<', 'product_categories.rgt');
+                })->get();
+            foreach($categories as $category) {
+                \Cache::forget(implode('_', ['document_categories', $category->id]));
+                \Cache::forget(implode('_', ['document_categories', 'descendantsAndSelf', 'withDocuments', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', 'descendants', $category->id]));
+            }
+        });
+
+        /**
+         * model moved method
+         *
+         * @param $model
+         */
+        parent::moved(function($model)
+        {
+            // cache forget
+            $category_id = $model->isRoot() ? $model->id : $model->getRoot()->id;
+            $categories = \DB::table('product_categories')->select('product_categories.id')
+                ->where('product_categories.id', $category_id)
+                ->join('product_categories as cat', function ($join) {
+                    $join->on('cat.lft', '>=', 'product_categories.lft')
+                        ->on('cat.lft', '<', 'product_categories.rgt');
+                })->get();
+            foreach($categories as $category) {
+                \Cache::forget(implode('_', ['document_categories', $category->id]));
+                \Cache::forget(implode('_', ['document_categories', 'descendantsAndSelf', 'withDocuments', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', 'descendants', $category->id]));
+            }
+        });
+
+        /**
+         * model deleted method
+         *
+         * @param $model
+         */
+        parent::deleted(function($model)
+        {
+            // cache forget
+            $category_id = $model->isRoot() ? $model->id : $model->getRoot()->id;
+            $categories = \DB::table('product_categories')->select('product_categories.id')
+                ->where('product_categories.id', $category_id)
+                ->join('product_categories as cat', function ($join) {
+                    $join->on('cat.lft', '>=', 'product_categories.lft')
+                        ->on('cat.lft', '<', 'product_categories.rgt');
+                })->get();
+            foreach($categories as $category) {
+                \Cache::forget(implode('_', ['document_categories', $category->id]));
+                \Cache::forget(implode('_', ['document_categories', 'descendantsAndSelf', 'withDocuments', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', $category->id]));
+                \Cache::forget(implode('_', ['category_documents', 'descendants', $category->id]));
+            }
+        });
+    }
 }

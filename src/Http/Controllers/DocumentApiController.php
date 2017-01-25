@@ -244,9 +244,25 @@ class DocumentApiController extends BaseController
      */
     public function group(Request $request)
     {
+        $this->clearCache();
         if ( $this->groupAlias(Document::class) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
+    }
+
+    /**
+     * clear cache
+     *
+     * @return void
+     */
+    private function clearCache()
+    {
+        // cache forget
+        foreach(\DB::table('document_categories')->get(['id']) as $category) {
+            \Cache::forget(implode('_', ['document_categories', 'descendantsAndSelf', 'withDocuments', $category->id]));
+            \Cache::forget(implode('_', ['category_documents', $category->id]));
+            \Cache::forget(implode('_', ['category_documents', 'descendants', $category->id]));
+        }
     }
 }
