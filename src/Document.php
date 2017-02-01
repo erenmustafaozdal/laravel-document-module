@@ -235,11 +235,11 @@ class Document extends Model
 
             // cache forget
             $category_id = $model->category->isRoot() ? $model->category_id : $model->category->getRoot()->id;
-            $categories = \DB::table('product_categories')->select('product_categories.id')
-                ->where('product_categories.id', $category_id)
-                ->join('product_categories as cat', function ($join) {
-                    $join->on('cat.lft', '>=', 'product_categories.lft')
-                        ->on('cat.lft', '<', 'product_categories.rgt');
+            $categories = \DB::table('document_categories')->select('document_categories.id')
+                ->where('document_categories.id', $category_id)
+                ->join('document_categories as cat', function ($join) {
+                    $join->on('cat.lft', '>=', 'document_categories.lft')
+                        ->on('cat.lft', '<', 'document_categories.rgt');
                 })->get();
             foreach($categories as $category) {
                 \Cache::forget(implode('_', ['document_categories', 'descendantsAndSelf', 'withDocuments', $category->id]));
