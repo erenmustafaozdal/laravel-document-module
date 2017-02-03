@@ -235,7 +235,7 @@ class Document extends Model
 
             // cache forget
             $category_id = $model->category->isRoot() ? $model->category_id : $model->category->getRoot()->id;
-            $categories = \DB::table('document_categories')->select('document_categories.id')
+            $categories = \DB::table('document_categories')->select('document_categories.id','cat.id')
                 ->where('document_categories.id', $category_id)
                 ->join('document_categories as cat', function ($join) {
                     $join->on('cat.lft', '>=', 'document_categories.lft')
@@ -260,7 +260,7 @@ class Document extends Model
 
             // cache forget
             $category_id = $model->category->isRoot() ? $model->category_id : $model->category->getRoot()->id;
-            $categories = \DB::table('document_categories')->select('document_categories.id')
+            $categories = \DB::table('document_categories')->select('document_categories.id','cat.id')
                 ->where('document_categories.id', $category_id)
                 ->join('document_categories as cat', function ($join) {
                     $join->on('cat.lft', '>=', 'document_categories.lft')
