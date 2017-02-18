@@ -248,16 +248,14 @@ class Document extends Model
             }
         });
 
+
         /**
          * model deleted method
          *
          * @param $model
          */
-        parent::deleted(function($model)
+        parent::deleting(function($model)
         {
-            $file = new FileRepository(config('laravel-document-module.document.uploads'));
-            $file->deleteDirectories($model);
-
             // cache forget
             $category_id = $model->category->isRoot() ? $model->category_id : $model->category->getRoot()->id;
             $categories = \DB::table('document_categories')->select('document_categories.id','cat.id')
@@ -271,6 +269,17 @@ class Document extends Model
                 \Cache::forget(implode('_', ['category_documents', $category->id]));
                 \Cache::forget(implode('_', ['category_documents', 'descendants', $category->id]));
             }
+        });
+
+        /**
+         * model deleted method
+         *
+         * @param $model
+         */
+        parent::deleted(function($model)
+        {
+            $file = new FileRepository(config('laravel-document-module.document.uploads'));
+            $file->deleteDirectories($model);
         });
     }
 }
